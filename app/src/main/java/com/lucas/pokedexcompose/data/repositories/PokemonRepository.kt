@@ -1,7 +1,6 @@
-package com.lucas.pokedexcompose.repositories
+package com.lucas.pokedexcompose.data.repositories
 
 import com.lucas.pokedexcompose.data.remote.IPokemonDataSource
-import com.lucas.pokedexcompose.data.remote.PokeApi
 import com.lucas.pokedexcompose.data.remote.responses.PokemonInfo
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.remote.responses.PokemonListResponse
