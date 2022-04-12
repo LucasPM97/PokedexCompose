@@ -1,43 +1,58 @@
 package com.lucas.pokedexcompose.repositories
 
+import com.lucas.pokedexcompose.data.remote.IPokemonDataSource
 import com.lucas.pokedexcompose.data.remote.PokeApi
 import com.lucas.pokedexcompose.data.remote.responses.PokemonInfo
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.remote.responses.PokemonListResponse
 import com.lucas.pokedexcompose.data.remote.responses.PokemonTypeInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class PokemonRepository(
-    private val api: PokeApi
-) {
+    private val dataSource: IPokemonDataSource
+) : IPokemonRepository {
 
-    suspend fun getPokemonList(limit: Int, offset: Int): Response<PokemonListResponse> {
-        val response = try {
-            api.getPokemonList(limit, offset)
-        } catch (e: Exception) {
-            return Response.Error("There was an error trying to get the pokemon list.")
+    override suspend fun getPokemonList(limit: Int, offset: Int): Response<PokemonListResponse> {
+        return withContext(Dispatchers.IO) {
+            val response = try {
+                dataSource.getPokemonListData(limit, offset)
+            } catch (e: Exception) {
+                return@withContext Response.Error("There was an error trying to get the pokemon list.")
+            }
+
+            return@withContext Response.Success(data = response)
         }
-
-        return Response.Success(data = response)
     }
 
-    suspend fun getPokemonInfo(pokemonName: String): Response<PokemonInfo> {
-        val response = try {
-            api.getPokemonInfo(pokemonName)
-        } catch (e: Exception) {
-            return Response.Error("There was an error trying to get the named pokemon info.")
-        }
+    override suspend fun getPokemonInfo(pokemonName: String): Response<PokemonInfo> {
+        return withContext(Dispatchers.IO) {
+            val response = try {
+                dataSource.getPokemonInfoData(pokemonName)
+            } catch (e: Exception) {
+                return@withContext Response.Error("There was an error trying to get the named pokemon info.")
+            }
 
-        return Response.Success(data = response)
+            return@withContext Response.Success(data = response)
+        }
     }
 
-    suspend fun getPokemonTypeInfo(pokemonType: String): Response<PokemonTypeInfo> {
-        val response = try {
-            api.getPokemonTypeInfo(pokemonType)
-        } catch (e: Exception) {
-            return Response.Error("There was an error trying to get the named pokemon type info.")
-        }
+    override suspend fun getPokemonTypeInfo(pokemonType: String): Response<PokemonTypeInfo> {
+        return withContext(Dispatchers.IO) {
+            val response = try {
+                dataSource.getPokemonTypeInfoData(pokemonType)
+            } catch (e: Exception) {
+                return@withContext Response.Error("There was an error trying to get the named pokemon type info.")
+            }
 
-        return Response.Success(data = response)
+            return@withContext Response.Success(data = response)
+        }
     }
+}
+
+interface IPokemonRepository {
+    suspend fun getPokemonList(limit: Int, offset: Int): Response<PokemonListResponse>
+    suspend fun getPokemonInfo(pokemonName: String): Response<PokemonInfo>
+    suspend fun getPokemonTypeInfo(pokemonType: String): Response<PokemonTypeInfo>
 }
