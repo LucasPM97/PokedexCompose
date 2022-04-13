@@ -59,6 +59,7 @@ fun SearchBar(
         if (isHintDisplayed) {
             Text(
                 text = hint,
+                style = MaterialTheme.typography.body1,
                 color = Color.LightGray,
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)
             )
