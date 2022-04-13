@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +22,7 @@ fun PokemonItemCard(
     pokemonItem: PokemonItem,
     modifier: Modifier = Modifier
 ) {
-    val shape = RoundedCornerShape(10)
+    val shape = MaterialTheme.shapes.small
 
     Column(
         modifier = modifier
@@ -38,7 +39,7 @@ fun PokemonItemCard(
         verticalArrangement = Arrangement.Center
     ) {
         PokemonImage(
-            pokemonId = 10,
+            pokemonId = 3,
             imageSize = 120
         )
         Text(
