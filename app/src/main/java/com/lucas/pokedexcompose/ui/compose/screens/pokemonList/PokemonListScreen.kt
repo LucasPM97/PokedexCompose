@@ -18,22 +18,23 @@ fun PokemonListScreen(
         color = PokedexBackground,
         modifier = Modifier.fillMaxSize()
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(10.dp)
+        ) {
             SearchBar(
                 hint = "Search...",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
             ) {
 
             }
+            Spacer(modifier = Modifier.height(10.dp))
             PokemonGridList(
                 pokemonList = listOf(
                     PokemonItem("Ditto"),
                     PokemonItem("Ditto 2"),
                     PokemonItem("Ditto 3"),
                 ),
-                contentPadding = PaddingValues(horizontal = 10.dp)
             )
         }
     }
