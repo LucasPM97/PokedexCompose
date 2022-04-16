@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PokedexCompose</string>
+    <string name="error_loading_pokemon_list">Ups… try again</string>
 </resources>

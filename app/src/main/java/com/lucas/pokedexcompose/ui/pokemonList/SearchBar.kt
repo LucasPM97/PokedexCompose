@@ -1,4 +1,4 @@
-package com.lucas.pokedexcompose.ui.compose.screens.pokemonList
+package com.lucas.pokedexcompose.ui.pokemonList
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

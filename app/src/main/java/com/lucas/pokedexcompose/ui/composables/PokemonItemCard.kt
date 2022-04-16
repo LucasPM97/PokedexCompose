@@ -1,4 +1,4 @@
-package com.lucas.pokedexcompose.ui.compose.composables
+package com.lucas.pokedexcompose.ui.composables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -14,14 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lucas.pokedexcompose.data.remote.responses.PokemonItem
+import com.lucas.pokedexcompose.data.models.PokemonListEntry
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonStroke
 
 @Composable
 fun PokemonItemCard(
-    pokemonItem: PokemonItem,
+    pokemonItem: PokemonListEntry,
     modifier: Modifier = Modifier
 ) {
     val shape = MaterialTheme.shapes.small
@@ -41,11 +41,11 @@ fun PokemonItemCard(
         verticalArrangement = Arrangement.Center
     ) {
         PokemonImage(
-            pokemonId = 3,
+            pokemonId = pokemonItem.number,
             imageSize = 120
         )
         Text(
-            text = pokemonItem.name
+            text = pokemonItem.pokemonName
         )
     }
 }
@@ -55,8 +55,9 @@ fun PokemonItemCard(
 fun PreviewPokemonItemCard() {
     PokedexComposeTheme {
         PokemonItemCard(
-            pokemonItem = PokemonItem(
-                name = "Pokemon",
+            pokemonItem = PokemonListEntry(
+                pokemonName = "Pokemon",
+                number = 1
             ),
             modifier = Modifier
                 .size(120.dp)

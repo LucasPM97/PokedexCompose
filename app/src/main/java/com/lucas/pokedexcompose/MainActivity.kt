@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.lucas.pokedexcompose.ui.compose.screens.pokemonList.PokemonListScreen
+import com.lucas.pokedexcompose.ui.pokemonList.PokemonListScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonListScreenName
 

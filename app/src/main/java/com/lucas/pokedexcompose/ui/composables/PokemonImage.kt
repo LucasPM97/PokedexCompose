@@ -1,4 +1,4 @@
-package com.lucas.pokedexcompose.ui.compose.composables
+package com.lucas.pokedexcompose.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
