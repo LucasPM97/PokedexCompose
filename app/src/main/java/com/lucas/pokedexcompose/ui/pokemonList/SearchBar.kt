@@ -7,16 +7,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lucas.pokedexcompose.ui.composables.BackPressHandler
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonStroke
@@ -57,7 +64,7 @@ fun SearchBar(
                 onSearch(it)
             },
             onFocusChanged = {
-                isHintDisplayed = !it.isFocused
+                isHintDisplayed = !it.isFocused && text.isEmpty()
             }
         )
 
@@ -69,12 +76,25 @@ fun SearchBar(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun Input(
     text: String,
     onValueChange: (String) -> Unit = {},
     onFocusChanged: (FocusState) -> Unit = {}
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+    fun stopEditingInput() {
+        keyboardController?.hide()
+        focusManager.clearFocus()
+    }
+
+    BackPressHandler {
+        stopEditingInput()
+    }
+
     BasicTextField(
         value = text,
         onValueChange = onValueChange,
@@ -85,7 +105,12 @@ private fun Input(
             .fillMaxWidth()
             .onFocusChanged {
                 onFocusChanged(it)
-            }
+            },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                stopEditingInput()
+            })
     )
 }
 

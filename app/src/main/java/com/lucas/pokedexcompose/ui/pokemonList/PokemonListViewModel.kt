@@ -34,6 +34,9 @@ class PokemonListViewModel(
     }
 
     fun loadPokemonListPage() {
+
+        if (uiState.value.loading) return
+
         _uiState.update {
             it.copy(
                 loading = true
