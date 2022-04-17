@@ -2,9 +2,7 @@ package com.lucas.pokedexcompose.ui.pokemonList
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,6 +21,14 @@ fun PokemonListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
+    var searchString by remember {
+        mutableStateOf("")
+    }
+
+    val pokemonList = state.pokemonList.filter {
+        it.pokemonName.lowercase().contains(searchString.lowercase())
+    }
+
     Surface(
         color = PokedexBackground,
         modifier = Modifier.fillMaxSize()
@@ -35,11 +41,11 @@ fun PokemonListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-
+                searchString = it
             }
             Spacer(modifier = Modifier.height(10.dp))
             PokemonGridList(
-                pokemonList = state.pokemonList,
+                pokemonList = pokemonList,
                 onEndReach = {
                     viewModel.loadPokemonListPage()
                 },
