@@ -7,7 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.lucas.pokedexcompose.ui.PokemonListViewModelFactory
+import com.lucas.pokedexcompose.ui.NavigateToPokemonInfoScreen
+import com.lucas.pokedexcompose.ui.PokemonViewModelFactory
+import com.lucas.pokedexcompose.ui.ViewModels
 import com.lucas.pokedexcompose.ui.composables.PokemonGridList
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 
@@ -15,7 +17,9 @@ import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 fun PokemonListScreen(
     navController: NavController,
     viewModel: PokemonListViewModel = viewModel(
-        factory = PokemonListViewModelFactory()
+        factory = PokemonViewModelFactory(
+            ViewModels.PokemonList
+        )
     )
 ) {
 
@@ -50,7 +54,10 @@ fun PokemonListScreen(
                     viewModel.loadPokemonListPage()
                 },
                 itemOnClick = {
-
+                    navController.NavigateToPokemonInfoScreen(
+                        it.pokemonName,
+                        it.number
+                    )
                 }
             )
         }
