@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucas.pokedexcompose.ui.composables.BackPressHandler
+import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonStroke
@@ -42,38 +43,31 @@ fun SearchBar(
         mutableStateOf(hint != "")
     }
 
-    val shape = MaterialTheme.shapes.small
+    PokeCardBox(modifier = modifier) {
+        Box(
+            modifier = modifier
+                .padding(horizontal = 20.dp, vertical = 12.dp)
+        ) {
 
-    Box(
-        modifier = modifier
-            .background(
-                PokedexPokemonBackground,
-                shape
+            Input(
+                text,
+                onValueChange = {
+                    text = it
+                    onSearch(it)
+                },
+                onFocusChanged = {
+                    isHintDisplayed = !it.isFocused && text.isEmpty()
+                }
             )
-            .border(
-                BorderStroke(5.dp, PokedexPokemonStroke),
-                shape
-            )
-            .padding(horizontal = 20.dp, vertical = 12.dp)
-    ) {
 
-        Input(
-            text,
-            onValueChange = {
-                text = it
-                onSearch(it)
-            },
-            onFocusChanged = {
-                isHintDisplayed = !it.isFocused && text.isEmpty()
+            if (isHintDisplayed) {
+                Hint(
+                    text = hint
+                )
             }
-        )
-
-        if (isHintDisplayed) {
-            Hint(
-                text = hint
-            )
         }
     }
+
 }
 
 @OptIn(ExperimentalComposeUiApi::class)

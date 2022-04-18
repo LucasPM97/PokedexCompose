@@ -3,10 +3,7 @@ package com.lucas.pokedexcompose.ui.composables
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,30 +21,24 @@ fun PokemonItemCard(
     pokemonItem: PokemonListEntry,
     modifier: Modifier = Modifier
 ) {
-    val shape = MaterialTheme.shapes.small
-
-    Column(
-        modifier = modifier
-            .background(
-                PokedexPokemonBackground,
-                shape
+    PokeCardBox(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            PokemonImage(
+                pokemonId = pokemonItem.number,
+                imageSize = 120
             )
-            .border(
-                BorderStroke(5.dp, PokedexPokemonStroke),
-                shape
+            Text(
+                text = pokemonItem.pokemonName
             )
-            .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        PokemonImage(
-            pokemonId = pokemonItem.number,
-            imageSize = 120
-        )
-        Text(
-            text = pokemonItem.pokemonName
-        )
+        }
     }
+
 }
 
 @Composable
