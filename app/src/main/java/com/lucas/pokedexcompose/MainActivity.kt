@@ -12,8 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.lucas.pokedexcompose.ui.PokemonInfoViewModelFactory
-import com.lucas.pokedexcompose.ui.pokemonInfo.PokemonInfoScreen
-import com.lucas.pokedexcompose.ui.pokemonList.PokemonListScreen
+import com.lucas.pokedexcompose.ui.screens.pokemonInfo.PokemonInfoScreen
+import com.lucas.pokedexcompose.ui.screens.pokemonList.PokemonListScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoScreenName
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonListScreenName

@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.lucas.pokedexcompose.data.remote.PokemonDataSource
 import com.lucas.pokedexcompose.data.remote.PokemonRetrofitBuilder
 import com.lucas.pokedexcompose.data.repositories.PokemonRepository
-import com.lucas.pokedexcompose.ui.pokemonInfo.PokemonInfoViewModel
-import com.lucas.pokedexcompose.ui.pokemonList.PokemonListViewModel
-import java.lang.Exception
+import com.lucas.pokedexcompose.ui.screens.pokemonInfo.PokemonInfoViewModel
+import com.lucas.pokedexcompose.ui.screens.pokemonList.PokemonListViewModel
 
 enum class ViewModels {
     PokemonList,

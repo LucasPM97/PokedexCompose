@@ -1,4 +1,4 @@
-package com.lucas.pokedexcompose.ui.pokemonInfo
+package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text

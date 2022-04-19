@@ -1,4 +1,4 @@
-package com.lucas.pokedexcompose.ui.pokemonInfo
+package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel

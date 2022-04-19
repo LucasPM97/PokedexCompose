@@ -1,4 +1,4 @@
-package com.lucas.pokedexcompose.ui.pokemonList
+package com.lucas.pokedexcompose.ui.screens.pokemonList
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
