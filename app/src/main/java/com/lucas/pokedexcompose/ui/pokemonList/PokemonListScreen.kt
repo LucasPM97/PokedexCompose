@@ -4,14 +4,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.lucas.pokedexcompose.data.models.PokemonListEntry
 import com.lucas.pokedexcompose.ui.NavigateToPokemonInfoScreen
 import com.lucas.pokedexcompose.ui.PokemonViewModelFactory
 import com.lucas.pokedexcompose.ui.ViewModels
 import com.lucas.pokedexcompose.ui.composables.PokemonGridList
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
+import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
 @Composable
 fun PokemonListScreen(
@@ -25,6 +28,15 @@ fun PokemonListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
+    PokemonListBody(state, viewModel, navController)
+}
+
+@Composable
+private fun PokemonListBody(
+    state: PokemonListUiState,
+    viewModel: PokemonListViewModel? = null,
+    navController: NavController? = null
+) {
     var searchString by remember {
         mutableStateOf("")
     }
@@ -51,15 +63,41 @@ fun PokemonListScreen(
             PokemonGridList(
                 pokemonList = pokemonList,
                 onEndReach = {
-                    viewModel.loadPokemonListPage()
+                    viewModel?.loadPokemonListPage()
                 },
                 itemOnClick = {
-                    navController.NavigateToPokemonInfoScreen(
+                    navController?.NavigateToPokemonInfoScreen(
                         it.pokemonName,
                         it.number
                     )
                 }
             )
         }
+    }
+}
+
+@Composable
+@Preview
+fun PreviewPokemonListScreen() {
+    PokedexComposeTheme {
+        PokemonListBody(
+            state = PokemonListUiState(
+                pokemonList = listOf(
+                    PokemonListEntry(
+                        "????",
+                        number = 1
+                    ),
+                    PokemonListEntry(
+                        "????",
+                        number = 1
+                    ),
+                    PokemonListEntry(
+                        "????",
+                        number = 1
+                    ),
+                ),
+                loading = false
+            )
+        )
     }
 }
