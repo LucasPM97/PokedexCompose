@@ -6,5 +6,12 @@ object Constans {
 
     object Screens {
         const val PokemonListScreenName = "pokemon_list"
+
+        const val PokemonInfoScreenName = "pokemon_info"
+        object PokemonInfoArguments{
+            const val PokemonName = "pokemonName"
+            const val PokemonNumber = "number"
+
+        }
     }
 }

@@ -1,7 +1,6 @@
-package com.lucas.pokedexcompose.ui.pokemonList
+package com.lucas.pokedexcompose.ui.screens.pokemonList
 
 import androidx.annotation.StringRes
-import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucas.pokedexcompose.R
@@ -58,7 +57,7 @@ class PokemonListViewModel(
                             it.url.takeLastWhile { it.isDigit() }
                         }
                         PokemonListEntry(
-                            it.name.replaceFirstChar { it.uppercase() },
+                            it.name,
                             number = number.toInt()
                         )
                     }
