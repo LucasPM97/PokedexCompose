@@ -4,8 +4,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucas.pokedexcompose.R
-import com.lucas.pokedexcompose.data.models.PokemonListEntry
-import com.lucas.pokedexcompose.data.remote.responses.PokemonInfo
+import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.repositories.IPokemonRepository
 import kotlinx.coroutines.Job
@@ -51,7 +50,16 @@ class PokemonInfoViewModel(
             when (response) {
                 is Response.Success -> {
 
-                    response.data?.let { pokemonInfo ->
+                    response.data?.let { data ->
+                        val pokemonInfo = PokemonInfoEntry(
+                            height = data.height.toFloat() / 10,
+                            weight = data.weight.toFloat() / 10,
+                            order = data.order,
+                            name = data.name,
+                            types = data.types.map {
+                                it.type
+                            }
+                        )
                         _uiState.update {
                             it.copy(
                                 pokemonInfo = pokemonInfo
@@ -102,7 +110,7 @@ data class PokemonInfoUiState(
     val pokemonName: String,
     val loadingInfo: Boolean = false,
     val loadingDescription: Boolean = false,
-    val pokemonInfo: PokemonInfo? = null,
+    val pokemonInfo: PokemonInfoEntry? = null,
     @StringRes val errorStringId: Int? = null
 
 )

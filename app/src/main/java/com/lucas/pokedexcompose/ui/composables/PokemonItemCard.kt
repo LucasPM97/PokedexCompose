@@ -35,6 +35,9 @@ fun PokemonItemCard(
             )
             Text(
                 text = pokemonItem.pokemonName
+                    .replaceFirstChar {
+                        it.uppercase()
+                    }
             )
         }
     }

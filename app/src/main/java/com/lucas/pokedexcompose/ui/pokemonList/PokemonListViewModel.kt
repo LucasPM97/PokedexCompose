@@ -58,7 +58,7 @@ class PokemonListViewModel(
                             it.url.takeLastWhile { it.isDigit() }
                         }
                         PokemonListEntry(
-                            it.name.replaceFirstChar { it.uppercase() },
+                            it.name,
                             number = number.toInt()
                         )
                     }
