@@ -1,6 +1,5 @@
 package com.lucas.pokedexcompose.ui.pokemonInfo
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -9,13 +8,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
-import com.lucas.pokedexcompose.data.remote.responses.*
+import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
@@ -35,12 +33,16 @@ fun PokemonInfoScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.padding(10.dp)
-        ) {
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
             PokeCardBox {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(20.dp)
                 ) {
                     PokemonImage(
@@ -73,7 +75,7 @@ fun PokemonInfoScreen(
                         text = it,
                         fontSize = 14.sp,
                         lineHeight = 30.sp,
-                        modifier = Modifier.padding(10.dp)
+                        modifier = Modifier.padding(20.dp)
                     )
 
                 }
