@@ -12,7 +12,10 @@ import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
 @Composable
-fun PokemonStats(pokemonInfo: PokemonInfoEntry) {
+fun PokemonStats(
+    pokemonInfo: PokemonInfoEntry,
+    onTypeClick: (String) -> Unit = {}
+) {
     Column() {
         PokeBodyStats(
             height = pokemonInfo.height,
@@ -20,7 +23,8 @@ fun PokemonStats(pokemonInfo: PokemonInfoEntry) {
         )
         Spacer(modifier = Modifier.height(20.dp))
         PokemonTypeRow(
-            types = pokemonInfo.types
+            types = pokemonInfo.types,
+            itemOnClick = onTypeClick
         )
     }
 }
