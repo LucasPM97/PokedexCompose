@@ -17,6 +17,7 @@ import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
+import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 
 @Composable
 fun PokemonInfoScreen(
@@ -44,12 +45,18 @@ fun PokemonInfoScreen(
                     imageSize = 240,
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = state.pokemonName
-                        .replaceFirstChar {
-                            it.uppercase()
-                        }
-                )
+                Row() {
+                    Text(
+                        text = state.pokemonNumber.threeDigitsString()
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = state.pokemonName
+                            .replaceFirstChar {
+                                it.uppercase()
+                            }
+                    )
+                }
                 Spacer(modifier = Modifier.height(20.dp))
                 state.pokemonInfo?.let {
                     PokemonStats(pokemonInfo = it)

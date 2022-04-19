@@ -54,7 +54,6 @@ class PokemonInfoViewModel(
                         val pokemonInfo = PokemonInfoEntry(
                             height = data.height.toFloat() / 10,
                             weight = data.weight.toFloat() / 10,
-                            order = data.order,
                             name = data.name,
                             types = data.types.map {
                                 it.type
