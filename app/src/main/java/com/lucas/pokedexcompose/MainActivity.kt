@@ -15,6 +15,7 @@ import com.lucas.pokedexcompose.ui.PokemonInfoViewModelFactory
 import com.lucas.pokedexcompose.ui.PokemonTypeInfoViewModelFactory
 import com.lucas.pokedexcompose.ui.screens.pokemonInfo.PokemonInfoScreen
 import com.lucas.pokedexcompose.ui.screens.pokemonList.PokemonListScreen
+import com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo.PokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.Constans
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoScreenName
@@ -86,7 +87,7 @@ fun App() {
                 it.arguments?.getString(PokemonTypeInfoArguments.PokemonTypeName)
             }
 
-            PokemonInfoScreen(
+            PokemonTypeInfoScreen(
                 navController = navController,
                 viewModel = viewModel(
                     factory = PokemonTypeInfoViewModelFactory(
