@@ -1,6 +1,8 @@
 package com.lucas.pokedexcompose.ui.pokemonInfo
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -35,93 +37,108 @@ fun PokemonInfoScreen(
         Column(
             modifier = Modifier
                 .padding(10.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-            PokeCardBox {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                ) {
-                    PokemonImage(
-                        pokemonId = state.pokemonNumber,
-                        imageSize = 240,
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row() {
-                        Text(
-                            text = state.pokemonNumber.threeDigitsString()
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = state.pokemonName
-                                .replaceFirstChar {
-                                    it.uppercase()
-                                }
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(20.dp))
-                    state.pokemonInfo?.let {
-                        PokemonStats(pokemonInfo = it)
-                    }
-                }
-            }
+        ) {
+            PokemonInfoBox(state)
             Spacer(modifier = Modifier.height(10.dp))
-            PokeCardBox {
-                state.description?.let {
-                    Text(
-                        text = it,
-                        fontSize = 14.sp,
-                        lineHeight = 30.sp,
-                        modifier = Modifier.padding(20.dp)
-                    )
+            PokemonDescriptionBox(state.description)
+        }
+    }
+}
 
-                }
+@Composable
+private fun PokemonInfoBox(state: PokemonInfoUiState) {
+    PokeCardBox {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            PokemonImage(
+                pokemonId = state.pokemonNumber,
+                imageSize = 240,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Row() {
+                Text(
+                    text = state.pokemonNumber.threeDigitsString()
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = state.pokemonName
+                        .replaceFirstChar {
+                            it.uppercase()
+                        }
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            state.pokemonInfo?.let {
+                PokemonStats(pokemonInfo = it)
             }
         }
     }
 }
 
 @Composable
-fun PokemonStats(pokemonInfo: PokemonInfoEntry) {
-    Column() {
-        PokeBodyStats(
-            height = pokemonInfo.height,
-            weight = pokemonInfo.weight
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        PokemonTypeData(
-            types = pokemonInfo.types
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-    }
+private fun PokemonDescriptionBox(description: String?) {
+    description?.let {
+        PokeCardBox(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = it,
+                fontSize = 14.sp,
+                lineHeight = 30.sp,
+                modifier = Modifier.padding(20.dp)
+            )
 
+        }
+    }
 }
 
 @Composable
 @Preview
-fun PreviewPokemonInfoBody() {
-    PokedexComposeTheme {
-        PokemonStats(
-            pokemonInfo = PokemonInfoEntry(
-                height = 1.7f,
-                name = "Charizard",
-                types = listOf(
-                    TypeInfo(
-                        name = "fire",
-                        url = ""
-                    ),
-                    TypeInfo(
-                        name = "flying",
-                        url = ""
-                    )
+fun PreviewPokemonInfoScreen() {
+    val state = PokemonInfoUiState(
+        pokemonInfo = PokemonInfoEntry(
+            height = 1.7f,
+            name = "Charizard",
+            types = listOf(
+                TypeInfo(
+                    name = "fire",
+                    url = ""
                 ),
-                weight = 90.5f
-            )
-        )
+                TypeInfo(
+                    name = "flying",
+                    url = ""
+                )
+            ),
+            weight = 90.5f
+        ),
+        pokemonName = "Charizard",
+        pokemonNumber = 7,
+        description = "This is a not too long description"
+    )
+
+    PokedexComposeTheme {
+        Surface(
+            color = PokedexBackground,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                PokemonInfoBox(state)
+                Spacer(modifier = Modifier.height(10.dp))
+                PokemonDescriptionBox(state.description)
+            }
+        }
     }
 }
-
-
