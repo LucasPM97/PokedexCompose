@@ -1,5 +1,6 @@
 package com.lucas.pokedexcompose.ui.pokemonInfo
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -8,8 +9,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.*
@@ -31,35 +34,48 @@ fun PokemonInfoScreen(
         color = PokedexBackground,
         modifier = Modifier.fillMaxSize()
     ) {
-        PokeCardBox(
+        Column(
             modifier = Modifier.padding(10.dp)
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp)
-            ) {
-                PokemonImage(
-                    pokemonId = state.pokemonNumber,
-                    imageSize = 240,
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Row() {
-                    Text(
-                        text = state.pokemonNumber.threeDigitsString()
+            PokeCardBox {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(20.dp)
+                ) {
+                    PokemonImage(
+                        pokemonId = state.pokemonNumber,
+                        imageSize = 240,
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = state.pokemonName
-                            .replaceFirstChar {
-                                it.uppercase()
-                            }
-                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row() {
+                        Text(
+                            text = state.pokemonNumber.threeDigitsString()
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = state.pokemonName
+                                .replaceFirstChar {
+                                    it.uppercase()
+                                }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    state.pokemonInfo?.let {
+                        PokemonStats(pokemonInfo = it)
+                    }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                state.pokemonInfo?.let {
-                    PokemonStats(pokemonInfo = it)
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            PokeCardBox {
+                state.description?.let {
+                    Text(
+                        text = it,
+                        fontSize = 14.sp,
+                        lineHeight = 30.sp,
+                        modifier = Modifier.padding(10.dp)
+                    )
+
                 }
             }
         }
@@ -90,7 +106,6 @@ fun PreviewPokemonInfoBody() {
             pokemonInfo = PokemonInfoEntry(
                 height = 1.7f,
                 name = "Charizard",
-                order = 7,
                 types = listOf(
                     TypeInfo(
                         name = "fire",

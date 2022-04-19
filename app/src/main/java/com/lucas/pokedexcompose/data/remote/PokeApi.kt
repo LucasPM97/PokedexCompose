@@ -1,5 +1,6 @@
 package com.lucas.pokedexcompose.data.remote
 
+import com.lucas.pokedexcompose.data.remote.responses.PokemonDescriptionResponse
 import com.lucas.pokedexcompose.data.remote.responses.PokemonInfo
 import com.lucas.pokedexcompose.data.remote.responses.PokemonListResponse
 import com.lucas.pokedexcompose.data.remote.responses.PokemonTypeInfo
@@ -15,13 +16,18 @@ interface PokeApi {
         @Query("offset") offset: Int
     ): PokemonListResponse
 
-    @GET("type/{name}")
+    @GET("type/{type}")
     suspend fun getPokemonTypeInfo(
-        @Path("name") pokemonType: String
+        @Path("type") pokemonType: String
     ): PokemonTypeInfo
 
     @GET("pokemon/{name}")
     suspend fun getPokemonInfo(
         @Path("name") name: String
     ): PokemonInfo
+
+    @GET("pokemon-species/{name}")
+    suspend fun getPokemonDescription(
+        @Path("name") pokemonName: String
+    ): PokemonDescriptionResponse
 }

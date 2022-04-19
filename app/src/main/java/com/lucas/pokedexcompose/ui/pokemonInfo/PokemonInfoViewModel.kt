@@ -7,6 +7,7 @@ import com.lucas.pokedexcompose.R
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.repositories.IPokemonRepository
+import com.lucas.pokedexcompose.utils.extensions.removeEndLineEntries
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -94,6 +95,42 @@ class PokemonInfoViewModel(
 
         getPokemonDescriptionJob?.cancel()
         getPokemonDescriptionJob = viewModelScope.launch {
+
+            val response =
+                repository.getPokemonDescription(pokemonName = _uiState.value.pokemonName)
+
+            when (response) {
+
+                is Response.Success -> {
+                    response.data?.let { data ->
+                        val flavorText = data.flavor_text_entries.firstOrNull {
+                            it.language.name == "en"
+                        }
+
+                        val description: String =
+                            flavorText?.flavor_text?.removeEndLineEntries()
+                                ?: "This pokemon has no description"
+
+
+                        _uiState.update {
+                            it.copy(
+                                description = description
+                            )
+                        }
+                    }
+                }
+
+                is Response.Error -> {
+                    _uiState.update {
+                        it.copy(
+                            errorStringId = R.string.error_loading_pokemon_list
+                        )
+                    }
+                }
+
+            }
+
+
             _uiState.update {
                 it.copy(
                     loadingDescription = false
@@ -108,8 +145,9 @@ data class PokemonInfoUiState(
     val pokemonNumber: Int,
     val pokemonName: String,
     val loadingInfo: Boolean = false,
-    val loadingDescription: Boolean = false,
     val pokemonInfo: PokemonInfoEntry? = null,
+    val loadingDescription: Boolean = false,
+    val description: String? = null,
     @StringRes val errorStringId: Int? = null
 
 )

@@ -1,10 +1,7 @@
 package com.lucas.pokedexcompose.data.repositories
 
 import com.lucas.pokedexcompose.data.remote.IPokemonDataSource
-import com.lucas.pokedexcompose.data.remote.responses.PokemonInfo
-import com.lucas.pokedexcompose.data.remote.responses.Response
-import com.lucas.pokedexcompose.data.remote.responses.PokemonListResponse
-import com.lucas.pokedexcompose.data.remote.responses.PokemonTypeInfo
+import com.lucas.pokedexcompose.data.remote.responses.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
@@ -37,6 +34,19 @@ class PokemonRepository(
         }
     }
 
+    override suspend fun getPokemonDescription(pokemonName: String): Response<PokemonDescriptionResponse> {
+        return withContext(Dispatchers.IO) {
+            val response = try {
+                dataSource.getPokemonDescriptionData(pokemonName)
+            } catch (e: Exception) {
+                print(e)
+                return@withContext Response.Error("There was an error trying to get the named pokemon info.")
+            }
+
+            return@withContext Response.Success(data = response)
+        }
+    }
+
     override suspend fun getPokemonTypeInfo(pokemonType: String): Response<PokemonTypeInfo> {
         return withContext(Dispatchers.IO) {
             val response = try {
@@ -53,5 +63,6 @@ class PokemonRepository(
 interface IPokemonRepository {
     suspend fun getPokemonList(limit: Int, offset: Int): Response<PokemonListResponse>
     suspend fun getPokemonInfo(pokemonName: String): Response<PokemonInfo>
+    suspend fun getPokemonDescription(pokemonName: String): Response<PokemonDescriptionResponse>
     suspend fun getPokemonTypeInfo(pokemonType: String): Response<PokemonTypeInfo>
 }
