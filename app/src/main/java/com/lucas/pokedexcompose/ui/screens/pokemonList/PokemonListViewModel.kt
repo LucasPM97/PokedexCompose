@@ -8,6 +8,7 @@ import com.lucas.pokedexcompose.data.models.PokemonListEntry
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.repositories.IPokemonRepository
 import com.lucas.pokedexcompose.utils.Constans.LIST_LIMIT
+import com.lucas.pokedexcompose.utils.extensions.getPokemonNumberFromUrl
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,14 +52,9 @@ class PokemonListViewModel(
                 is Response.Success -> {
 
                     val entries: List<PokemonListEntry>? = response.data?.results?.map {
-                        val number = if (it.url.endsWith("/")) {
-                            it.url.dropLast(1).takeLastWhile { it.isDigit() }
-                        } else {
-                            it.url.takeLastWhile { it.isDigit() }
-                        }
                         PokemonListEntry(
                             it.name,
-                            number = number.toInt()
+                            number = it.url.getPokemonNumberFromUrl()
                         )
                     }
 
