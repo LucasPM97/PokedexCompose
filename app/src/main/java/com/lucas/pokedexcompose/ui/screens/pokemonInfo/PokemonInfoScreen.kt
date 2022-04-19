@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
+import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
@@ -30,10 +31,7 @@ fun PokemonInfoScreen(
     val state by viewModel.uiState.collectAsState()
 
 
-    Surface(
-        color = PokedexBackground,
-        modifier = Modifier.fillMaxSize()
-    ) {
+    PokeScreen {
         Column(
             modifier = Modifier
                 .padding(10.dp)
@@ -124,10 +122,7 @@ fun PreviewPokemonInfoScreen() {
     )
 
     PokedexComposeTheme {
-        Surface(
-            color = PokedexBackground,
-            modifier = Modifier.fillMaxSize()
-        ) {
+        PokeScreen {
             Column(
                 modifier = Modifier
                     .padding(10.dp)

@@ -12,6 +12,7 @@ import com.lucas.pokedexcompose.data.models.PokemonListEntry
 import com.lucas.pokedexcompose.ui.NavigateToPokemonInfoScreen
 import com.lucas.pokedexcompose.ui.PokemonViewModelFactory
 import com.lucas.pokedexcompose.ui.ViewModels
+import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonGridList
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
@@ -45,10 +46,7 @@ private fun PokemonListBody(
         it.pokemonName.lowercase().contains(searchString.lowercase())
     }
 
-    Surface(
-        color = PokedexBackground,
-        modifier = Modifier.fillMaxSize()
-    ) {
+    PokeScreen {
         Column(
             modifier = Modifier.padding(10.dp)
         ) {
