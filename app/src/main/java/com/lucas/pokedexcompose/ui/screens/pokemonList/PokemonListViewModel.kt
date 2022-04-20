@@ -87,6 +87,6 @@ class PokemonListViewModel(
 
 data class PokemonListUiState(
     val pokemonList: List<PokemonListEntry>,
-    val loading: Boolean,
+    val loading: Boolean = false,
     @StringRes val errorStringId: Int? = null
 )

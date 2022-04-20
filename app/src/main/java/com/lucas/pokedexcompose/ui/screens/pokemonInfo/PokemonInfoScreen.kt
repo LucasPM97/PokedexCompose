@@ -3,7 +3,6 @@ package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,7 +19,6 @@ import com.lucas.pokedexcompose.ui.NavigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
-import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 
@@ -31,8 +29,9 @@ fun PokemonInfoScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
 
-
-    PokeScreen {
+    PokeScreen(
+        isLoading = state.loadingInfo || state.loadingDescription
+    ) {
         Column(
             modifier = Modifier
                 .padding(10.dp)

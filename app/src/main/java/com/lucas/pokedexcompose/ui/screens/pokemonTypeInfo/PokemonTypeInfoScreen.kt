@@ -26,10 +26,11 @@ fun PokemonTypeInfoScreen(
     navController: NavController,
     viewModel: PokemonTypeInfoViewModel
 ) {
+    val state by viewModel.uiState.collectAsState()
     PokeScreen(
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier.padding(10.dp),
+        isLoading = state.loading
     ) {
-        val state by viewModel.uiState.collectAsState()
 
         ScreenBody(state, navController)
     }
@@ -79,49 +80,50 @@ fun ScreenBody(
     }
 }
 
+val MockStateSucceeded = PokemonTypeInfoUiState(
+    pokemonTypeName = "Fire",
+    pokemonTypeInfo = PokemonTypeInfoEntry(
+        damageRelations = DamageRelations(
+            doubleDamageFrom = listOf(
+                DamageRelation(
+                    "water"
+                ),
+                DamageRelation(
+                    "psychic"
+                )
+            ),
+            doubleDamageTo = listOf(
+                DamageRelation(
+                    "grass"
+                ),
+                DamageRelation(
+                    "ice"
+                )
+            )
+        ),
+        name = "Fire",
+        pokemons = listOf(
+            PokemonListEntry(
+                "Charmander",
+                7
+            ),
+            PokemonListEntry(
+                "Charizard",
+                9
+            )
+        )
+    )
+)
 
 @Composable
 @Preview
-fun PreviewPokemonTypeInfoScreen() {
+fun PreviewPokemonTypeInfoScreenSucceeded() {
     PokedexComposeTheme {
         PokeScreen(
             modifier = Modifier.padding(10.dp)
         ) {
             ScreenBody(
-                state = PokemonTypeInfoUiState(
-                    pokemonTypeName = "Fire",
-                    pokemonTypeInfo = PokemonTypeInfoEntry(
-                        damageRelations = DamageRelations(
-                            doubleDamageFrom = listOf(
-                                DamageRelation(
-                                    "water"
-                                ),
-                                DamageRelation(
-                                    "psychic"
-                                )
-                            ),
-                            doubleDamageTo = listOf(
-                                DamageRelation(
-                                    "grass"
-                                ),
-                                DamageRelation(
-                                    "ice"
-                                )
-                            )
-                        ),
-                        name = "Fire",
-                        pokemons = listOf(
-                            PokemonListEntry(
-                                "Charmander",
-                                7
-                            ),
-                            PokemonListEntry(
-                                "Charizard",
-                                9
-                            )
-                        )
-                    )
-                )
+                state = MockStateSucceeded
             )
         }
     }

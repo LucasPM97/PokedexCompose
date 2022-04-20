@@ -46,7 +46,9 @@ private fun PokemonListBody(
         it.pokemonName.lowercase().contains(searchString.lowercase())
     }
 
-    PokeScreen {
+    PokeScreen(
+        isLoading = state.loading
+    ) {
         Column(
             modifier = Modifier.padding(10.dp)
         ) {
@@ -93,8 +95,7 @@ fun PreviewPokemonListScreen() {
                         "????",
                         number = 1
                     ),
-                ),
-                loading = false
+                )
             )
         )
     }
