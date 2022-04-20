@@ -24,10 +24,10 @@ fun PokemonTypeRow(
             PokemonTypeBox(
                 type.name,
                 modifier = Modifier
-                    .padding(10.dp)
                     .clickable {
                         itemOnClick(type.name)
                     }
+                    .padding(10.dp)
             )
 
             if (types.size > 1 && index != types.lastIndex) {
