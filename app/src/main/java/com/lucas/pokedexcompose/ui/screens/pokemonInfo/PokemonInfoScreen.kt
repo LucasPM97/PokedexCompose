@@ -3,7 +3,6 @@ package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,9 +15,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
+import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
+import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
-import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 
@@ -29,10 +29,8 @@ fun PokemonInfoScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
 
-
-    Surface(
-        color = PokedexBackground,
-        modifier = Modifier.fillMaxSize()
+    PokeScreen(
+        isLoading = state.loadingInfo || state.loadingDescription
     ) {
         Column(
             modifier = Modifier
@@ -41,7 +39,7 @@ fun PokemonInfoScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            PokemonInfoBox(state)
+            PokemonInfoBox(state, navController)
             Spacer(modifier = Modifier.height(10.dp))
             PokemonDescriptionBox(state.description)
         }
@@ -49,7 +47,10 @@ fun PokemonInfoScreen(
 }
 
 @Composable
-private fun PokemonInfoBox(state: PokemonInfoUiState) {
+private fun PokemonInfoBox(
+    state: PokemonInfoUiState,
+    navController: NavController? = null
+) {
     PokeCardBox {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,7 +77,14 @@ private fun PokemonInfoBox(state: PokemonInfoUiState) {
             }
             Spacer(modifier = Modifier.height(20.dp))
             state.pokemonInfo?.let {
-                PokemonStats(pokemonInfo = it)
+                PokemonStats(
+                    pokemonInfo = it,
+                    onTypeClick = {
+                        navController?.navigateToPokemonTypeInfoScreen(
+                            it
+                        )
+                    }
+                )
             }
         }
     }
@@ -124,10 +132,7 @@ fun PreviewPokemonInfoScreen() {
     )
 
     PokedexComposeTheme {
-        Surface(
-            color = PokedexBackground,
-            modifier = Modifier.fillMaxSize()
-        ) {
+        PokeScreen {
             Column(
                 modifier = Modifier
                     .padding(10.dp)

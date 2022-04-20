@@ -1,13 +1,14 @@
-package com.lucas.pokedexcompose.ui.screens.pokemonList
+package com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucas.pokedexcompose.R
 import com.lucas.pokedexcompose.data.models.PokemonListEntry
+import com.lucas.pokedexcompose.data.models.PokemonTypeInfoEntry
+import com.lucas.pokedexcompose.data.remote.responses.PokemonTypeInfo
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.repositories.IPokemonRepository
-import com.lucas.pokedexcompose.utils.Constans.LIST_LIMIT
 import com.lucas.pokedexcompose.utils.extensions.getPokemonNumberFromUrl
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,14 +16,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class PokemonListViewModel(
-    private val repository: IPokemonRepository
+class PokemonTypeInfoViewModel(
+    private val repository: IPokemonRepository,
+    pokemonTypeName: String
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        PokemonListUiState(
-            loading = false,
-            pokemonList = emptyList()
+        PokemonTypeInfoUiState(
+            pokemonTypeName = pokemonTypeName,
         )
     )
     val uiState = _uiState.asStateFlow()
@@ -30,11 +31,10 @@ class PokemonListViewModel(
     private var job: Job? = null
 
     init {
-        loadPokemonListPage()
+        getPokemonTypeInfo()
     }
 
-    fun loadPokemonListPage() {
-
+    private fun getPokemonTypeInfo() {
         if (uiState.value.loading) return
 
         _uiState.update {
@@ -45,23 +45,27 @@ class PokemonListViewModel(
 
         job?.cancel()
         job = viewModelScope.launch {
-
-            val response = repository.getPokemonList(LIST_LIMIT, uiState.value.pokemonList.size)
-
+            var response =
+                repository.getPokemonTypeInfo(pokemonType = _uiState.value.pokemonTypeName)
             when (response) {
                 is Response.Success -> {
+                    response.data?.let { data ->
 
-                    val entries: List<PokemonListEntry>? = response.data?.results?.map {
-                        PokemonListEntry(
-                            it.name,
-                            number = it.url.getPokemonNumberFromUrl()
+                        val pokemonTypeInfo = PokemonTypeInfoEntry(
+                            damageRelations = data.damageRelations,
+                            name = data.name,
+                            pokemons = data.pokemon.map {
+
+                                PokemonListEntry(
+                                    pokemonName = it.pokemon.name,
+                                    number = it.pokemon.url.getPokemonNumberFromUrl()
+                                )
+                            }
                         )
-                    }
 
-                    entries?.let {
                         _uiState.update {
                             it.copy(
-                                pokemonList = uiState.value.pokemonList + entries
+                                pokemonTypeInfo = pokemonTypeInfo
                             )
                         }
                     }
@@ -82,11 +86,12 @@ class PokemonListViewModel(
             }
         }
     }
-
 }
 
-data class PokemonListUiState(
-    val pokemonList: List<PokemonListEntry>,
+data class PokemonTypeInfoUiState(
+    val pokemonTypeName: String,
+    val pokemonTypeInfo: PokemonTypeInfoEntry? = null,
     val loading: Boolean = false,
     @StringRes val errorStringId: Int? = null
+
 )

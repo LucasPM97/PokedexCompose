@@ -1,7 +1,6 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonList
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -9,11 +8,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonListEntry
-import com.lucas.pokedexcompose.ui.NavigateToPokemonInfoScreen
+import com.lucas.pokedexcompose.ui.navigateToPokemonInfoScreen
 import com.lucas.pokedexcompose.ui.PokemonViewModelFactory
 import com.lucas.pokedexcompose.ui.ViewModels
+import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonGridList
-import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
 @Composable
@@ -45,9 +44,8 @@ private fun PokemonListBody(
         it.pokemonName.lowercase().contains(searchString.lowercase())
     }
 
-    Surface(
-        color = PokedexBackground,
-        modifier = Modifier.fillMaxSize()
+    PokeScreen(
+        isLoading = state.loading
     ) {
         Column(
             modifier = Modifier.padding(10.dp)
@@ -66,7 +64,7 @@ private fun PokemonListBody(
                     viewModel?.loadPokemonListPage()
                 },
                 itemOnClick = {
-                    navController?.NavigateToPokemonInfoScreen(
+                    navController?.navigateToPokemonInfoScreen(
                         it.pokemonName,
                         it.number
                     )
@@ -95,8 +93,7 @@ fun PreviewPokemonListScreen() {
                         "????",
                         number = 1
                     ),
-                ),
-                loading = false
+                )
             )
         )
     }

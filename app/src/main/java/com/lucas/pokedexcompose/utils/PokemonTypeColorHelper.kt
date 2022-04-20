@@ -6,7 +6,7 @@ import com.lucas.pokedexcompose.ui.theme.*
 object PokemonTypeColorHelper {
 
     fun getPokemonTypeColor(pokemonType: String): Color {
-        return when (pokemonType) {
+        return when (pokemonType.lowercase()) {
             "normal" -> TypeNormal
             "fighting" -> TypeFighting
             "flying" -> TypeFlying

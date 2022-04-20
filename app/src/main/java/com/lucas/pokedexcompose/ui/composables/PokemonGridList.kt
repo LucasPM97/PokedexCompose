@@ -1,12 +1,15 @@
 package com.lucas.pokedexcompose.ui.composables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucas.pokedexcompose.data.models.PokemonListEntry
@@ -34,7 +37,8 @@ fun PokemonGridList(
 
             PokemonItemCard(
                 pokemonList[index],
-                modifier = Modifier.clickable {
+                modifier = Modifier
+                    .clickable {
                     itemOnClick(pokemonList[index])
                 }
             )

@@ -12,12 +12,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.lucas.pokedexcompose.ui.PokemonInfoViewModelFactory
+import com.lucas.pokedexcompose.ui.PokemonTypeInfoViewModelFactory
 import com.lucas.pokedexcompose.ui.screens.pokemonInfo.PokemonInfoScreen
 import com.lucas.pokedexcompose.ui.screens.pokemonList.PokemonListScreen
+import com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo.PokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
+import com.lucas.pokedexcompose.utils.Constans
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoScreenName
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonListScreenName
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoArguments
+import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonTypeInfoScreenName
+import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonTypeInfoArguments
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +72,26 @@ fun App() {
                     factory = PokemonInfoViewModelFactory(
                         pokemonNumber = pokemonNumber ?: 1,
                         pokemonName = pokemonName ?: "Dummy"
+                    )
+                )
+            )
+        }
+        composable("$PokemonTypeInfoScreenName/{${PokemonTypeInfoArguments.PokemonTypeName}}",
+            arguments = listOf(
+                navArgument(PokemonTypeInfoArguments.PokemonTypeName) {
+                    type = NavType.StringType
+                }
+            )) {
+
+            val pokemonTypeName = remember {
+                it.arguments?.getString(PokemonTypeInfoArguments.PokemonTypeName)
+            }
+
+            PokemonTypeInfoScreen(
+                navController = navController,
+                viewModel = viewModel(
+                    factory = PokemonTypeInfoViewModelFactory(
+                        pokemonTypeName = pokemonTypeName ?: "Dummy"
                     )
                 )
             )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.unit.dp
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexPokemonStroke
@@ -20,7 +21,7 @@ fun PokeCardBox(
     val shape = MaterialTheme.shapes.small
 
     Box(
-        modifier = modifier
+        modifier = Modifier
             .background(
                 PokedexPokemonBackground,
                 shape
@@ -29,6 +30,9 @@ fun PokeCardBox(
                 BorderStroke(5.dp, PokedexPokemonStroke),
                 shape
             )
+            .composed {
+                modifier
+            }
     ) {
         content()
     }

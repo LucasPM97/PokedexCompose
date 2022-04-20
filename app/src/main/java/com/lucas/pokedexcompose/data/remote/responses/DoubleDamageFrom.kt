@@ -1,6 +1,5 @@
 package com.lucas.pokedexcompose.data.remote.responses
 
-data class DoubleDamageFrom(
+data class DamageRelation(
     val name: String,
-    val url: String
 )

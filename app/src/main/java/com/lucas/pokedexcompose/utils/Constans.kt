@@ -13,5 +13,10 @@ object Constans {
             const val PokemonNumber = "number"
 
         }
+
+        const val PokemonTypeInfoScreenName = "pokemon_type_info"
+        object PokemonTypeInfoArguments{
+            const val PokemonTypeName = "pokemonTypeName"
+        }
     }
 }
