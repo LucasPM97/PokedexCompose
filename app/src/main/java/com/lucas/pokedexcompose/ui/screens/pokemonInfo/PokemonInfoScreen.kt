@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
-import com.lucas.pokedexcompose.ui.NavigateToPokemonTypeInfoScreen
+import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
@@ -80,7 +80,7 @@ private fun PokemonInfoBox(
                 PokemonStats(
                     pokemonInfo = it,
                     onTypeClick = {
-                        navController?.NavigateToPokemonTypeInfoScreen(
+                        navController?.navigateToPokemonTypeInfoScreen(
                             it
                         )
                     }

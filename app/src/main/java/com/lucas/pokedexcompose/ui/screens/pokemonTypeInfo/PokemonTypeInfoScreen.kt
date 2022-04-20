@@ -13,8 +13,8 @@ import com.lucas.pokedexcompose.data.models.PokemonListEntry
 import com.lucas.pokedexcompose.data.models.PokemonTypeInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.DamageRelation
 import com.lucas.pokedexcompose.data.remote.responses.DamageRelations
-import com.lucas.pokedexcompose.ui.NavigateToPokemonInfoScreen
-import com.lucas.pokedexcompose.ui.NavigateToPokemonTypeInfoScreen
+import com.lucas.pokedexcompose.ui.navigateToPokemonInfoScreen
+import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonGridList
@@ -57,7 +57,7 @@ fun ScreenBody(
                         modifier = Modifier.padding(20.dp)
                     ) {
                         DamageRelations(it.damageRelations) {
-                            navController?.NavigateToPokemonTypeInfoScreen(
+                            navController?.navigateToPokemonTypeInfoScreen(
                                 it
                             )
                         }
@@ -70,7 +70,7 @@ fun ScreenBody(
             PokemonGridList(
                 pokemonList = it.pokemons,
                 itemOnClick = { pokemon ->
-                    navController?.NavigateToPokemonInfoScreen(
+                    navController?.navigateToPokemonInfoScreen(
                         pokemon.pokemonName,
                         pokemon.number
                     )
