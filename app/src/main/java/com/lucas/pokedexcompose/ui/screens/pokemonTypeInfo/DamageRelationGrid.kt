@@ -1,6 +1,7 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -18,7 +19,8 @@ import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 @Composable
 fun DamageRelationGrid(
     text: String,
-    damageRelation: List<DamageRelation>
+    damageRelation: List<DamageRelation>,
+    itemOnPress: (String) -> Unit = {}
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text)
@@ -30,9 +32,14 @@ fun DamageRelationGrid(
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             items(damageRelation.size) { index ->
+                val pokemonTypeName = damageRelation[index].name
                 PokemonTypeBox(
-                    damageRelation[index].name,
-                    modifier = Modifier.padding(10.dp),
+                    pokemonTypeName,
+                    modifier = Modifier
+                        .clickable {
+                            itemOnPress(pokemonTypeName)
+                        }
+                        .padding(10.dp),
                     fontSize = 14.sp
                 )
             }
