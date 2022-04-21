@@ -18,31 +18,26 @@ import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DamageRelationGrid(
-    text: String,
     damageRelation: List<DamageRelation>,
     itemOnPress: (String) -> Unit = {}
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text)
-        Spacer(modifier = Modifier.height(10.dp))
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(2),
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-        ) {
-            items(damageRelation.size) { index ->
-                val pokemonTypeName = damageRelation[index].name
-                PokemonTypeBox(
-                    pokemonTypeName,
-                    modifier = Modifier
-                        .clickable {
-                            itemOnPress(pokemonTypeName)
-                        }
-                        .padding(10.dp),
-                    fontSize = 14.sp
-                )
-            }
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(2),
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        items(damageRelation.size) { index ->
+            val pokemonTypeName = damageRelation[index].name
+            PokemonTypeBox(
+                pokemonTypeName,
+                modifier = Modifier
+                    .clickable {
+                        itemOnPress(pokemonTypeName)
+                    }
+                    .padding(10.dp),
+                fontSize = 14.sp
+            )
         }
     }
 }
@@ -52,7 +47,6 @@ fun DamageRelationGrid(
 fun PreviewDamageRelationGrid() {
     PokedexComposeTheme {
         DamageRelationGrid(
-            text = "Title",
             damageRelation = listOf(
                 DamageRelation(
                     "grass"
