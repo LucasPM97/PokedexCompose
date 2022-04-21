@@ -30,11 +30,13 @@ fun PokemonInfoScreen(
     val state by viewModel.uiState.collectAsState()
 
     PokeScreen(
-        isLoading = state.loadingInfo || state.loadingDescription
+        isLoading = state.loadingInfo || state.loadingDescription,
+        navController = navController
     ) {
         Column(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(horizontal = 10.dp)
+                .padding(top = 10.dp)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,

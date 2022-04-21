@@ -2,22 +2,22 @@ package com.lucas.pokedexcompose.ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import com.lucas.pokedexcompose.ui.composables.navigation.BottomBar
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
 @Composable
 fun PokeScreen(
-    modifier: Modifier = Modifier,
     isLoading: Boolean = false,
-    content: @Composable BoxScope.() -> Unit
+    navController: NavController? = null,
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Surface(
         color = PokedexBackground,
@@ -27,10 +27,35 @@ fun PokeScreen(
         if (isLoading) {
             LoadingOverlay()
         } else {
-            Box(modifier) {
-                content()
+            Screen(
+                navController = navController
+            ) {
+                Box(Modifier.padding(it)) {
+                    content()
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun Screen(
+    navController: NavController? = null,
+    content: @Composable (PaddingValues) -> Unit
+) {
+    content(PaddingValues())
+
+    if (navController?.previousBackStackEntry == null) {
+        content(PaddingValues())
+        return
+    }
+
+    Scaffold(
+        bottomBar = {
+            BottomBar(navController)
+        }
+    ) {
+        content(it)
     }
 }
 
