@@ -45,7 +45,8 @@ private fun PokemonListBody(
     }
 
     PokeScreen(
-        isLoading = state.loading
+        isLoading = state.loading &&
+                state.pokemonList.isNullOrEmpty()
     ) {
         Column(
             modifier = Modifier.padding(10.dp)
