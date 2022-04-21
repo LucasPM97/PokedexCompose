@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.lucas.pokedexcompose.R
 import com.lucas.pokedexcompose.data.models.PokemonListEntry
 import com.lucas.pokedexcompose.data.models.PokemonTypeInfoEntry
-import com.lucas.pokedexcompose.data.remote.responses.PokemonTypeInfo
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.repositories.IPokemonRepository
 import com.lucas.pokedexcompose.utils.extensions.getPokemonNumberFromUrl

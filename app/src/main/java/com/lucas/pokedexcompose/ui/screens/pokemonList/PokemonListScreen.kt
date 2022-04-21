@@ -31,7 +31,7 @@ fun PokemonListScreen(
 }
 
 @Composable
-private fun PokemonListBody(
+fun PokemonListBody(
     state: PokemonListUiState,
     viewModel: PokemonListViewModel? = null,
     navController: NavController? = null
@@ -49,7 +49,9 @@ private fun PokemonListBody(
                 state.pokemonList.isNullOrEmpty()
     ) {
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .padding(top = 10.dp)
         ) {
             SearchBar(
                 hint = "Search...",
@@ -75,27 +77,27 @@ private fun PokemonListBody(
     }
 }
 
+fun MockState(): PokemonListUiState {
+    val list = mutableListOf<PokemonListEntry>()
+    for (i in 0..20) {
+        list.add(
+            PokemonListEntry(
+                "????",
+                number = i
+            )
+        )
+    }
+    return PokemonListUiState(
+        pokemonList = list,
+    )
+}
+
 @Composable
 @Preview
 fun PreviewPokemonListScreen() {
     PokedexComposeTheme {
         PokemonListBody(
-            state = PokemonListUiState(
-                pokemonList = listOf(
-                    PokemonListEntry(
-                        "????",
-                        number = 1
-                    ),
-                    PokemonListEntry(
-                        "????",
-                        number = 1
-                    ),
-                    PokemonListEntry(
-                        "????",
-                        number = 1
-                    ),
-                )
-            )
+            state = MockState()
         )
     }
 }

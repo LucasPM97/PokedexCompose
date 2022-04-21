@@ -28,8 +28,8 @@ fun PokemonTypeInfoScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     PokeScreen(
-        modifier = Modifier.padding(10.dp),
-        isLoading = state.loading
+        isLoading = state.loading,
+        navController = navController
     ) {
 
         ScreenBody(state, navController)
@@ -41,7 +41,10 @@ fun ScreenBody(
     state: PokemonTypeInfoUiState,
     navController: NavController? = null
 ) {
-    Column {
+    Column(
+        modifier = Modifier.padding(horizontal = 10.dp)
+            .padding(top = 10.dp)
+    ) {
         PokeCardBox {
             Column {
                 Spacer(modifier = Modifier.height(30.dp))
@@ -119,9 +122,7 @@ val MockStateSucceeded = PokemonTypeInfoUiState(
 @Preview
 fun PreviewPokemonTypeInfoScreenSucceeded() {
     PokedexComposeTheme {
-        PokeScreen(
-            modifier = Modifier.padding(10.dp)
-        ) {
+        PokeScreen {
             ScreenBody(
                 state = MockStateSucceeded
             )
