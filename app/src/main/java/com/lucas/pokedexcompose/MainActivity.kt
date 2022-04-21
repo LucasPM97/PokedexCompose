@@ -17,7 +17,6 @@ import com.lucas.pokedexcompose.ui.screens.pokemonInfo.PokemonInfoScreen
 import com.lucas.pokedexcompose.ui.screens.pokemonList.PokemonListScreen
 import com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo.PokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
-import com.lucas.pokedexcompose.utils.Constans
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoScreenName
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonListScreenName
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoArguments
