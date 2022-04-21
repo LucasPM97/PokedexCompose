@@ -17,12 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun BackButton(navController: NavController) {
+fun BackButton(navController: NavController?) {
     Row(
         modifier = Modifier
             .fillMaxHeight()
             .clickable {
-                navController.popBackStack()
+                navController?.popBackStack()
             },
         verticalAlignment = Alignment.CenterVertically
     ) {

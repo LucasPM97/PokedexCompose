@@ -19,43 +19,25 @@ fun PokeScreen(
     navController: NavController? = null,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    Surface(
-        color = PokedexBackground,
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        if (isLoading) {
-            LoadingOverlay()
-        } else {
-            Screen(
-                navController = navController
-            ) {
-                Box(Modifier.padding(it)) {
-                    content()
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun Screen(
-    navController: NavController? = null,
-    content: @Composable (PaddingValues) -> Unit
-) {
-    content(PaddingValues())
-
-    if (navController?.previousBackStackEntry == null) {
-        content(PaddingValues())
-        return
-    }
-
     Scaffold(
         bottomBar = {
             BottomBar(navController)
         }
     ) {
-        content(it)
+        Surface(
+            color = PokedexBackground,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            if (isLoading) {
+                LoadingOverlay()
+                return@Surface
+            }
+
+            Box(Modifier.padding(it)) {
+                content()
+            }
+        }
     }
 }
 

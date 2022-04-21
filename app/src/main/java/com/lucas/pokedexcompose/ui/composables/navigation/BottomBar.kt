@@ -11,7 +11,12 @@ import androidx.navigation.NavController
 import com.lucas.pokedexcompose.ui.theme.PokedexTopBottomBar
 
 @Composable
-fun BottomBar(navController: NavController) {
+fun BottomBar(
+    navController: NavController?
+) {
+
+    if (navController?.previousBackStackEntry == null) return
+
     BottomAppBar(
         backgroundColor = PokedexTopBottomBar
     ) {
