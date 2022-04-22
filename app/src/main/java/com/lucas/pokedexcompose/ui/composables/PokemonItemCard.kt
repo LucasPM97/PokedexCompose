@@ -1,7 +1,7 @@
 package com.lucas.pokedexcompose.ui.composables
 
+import AutoSizeText
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +19,7 @@ fun PokemonItemCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp),
+                .padding(5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -27,7 +27,7 @@ fun PokemonItemCard(
                 pokemonId = pokemonItem.number,
                 imageSize = 120
             )
-            Text(
+            AutoSizeText(
                 text = pokemonItem.pokemonName
                     .replaceFirstChar {
                         it.uppercase()
@@ -35,7 +35,6 @@ fun PokemonItemCard(
             )
         }
     }
-
 }
 
 @Composable

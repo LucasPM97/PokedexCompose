@@ -4,6 +4,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -38,6 +40,7 @@ fun PokemonGridList(
             PokemonItemCard(
                 pokemonList[index],
                 modifier = Modifier
+                    .height(170.dp)
                     .clickable {
                         itemOnClick(pokemonList[index])
                     }
@@ -52,7 +55,7 @@ fun PreviewPokemonGridList() {
     PokedexComposeTheme() {
         PokemonGridList(
             pokemonList = listOf(
-                PokemonListEntry("Bulbasaur", 1),
+                PokemonListEntry("Charmander", 1),
                 PokemonListEntry("Ivasaur", 2),
                 PokemonListEntry("Venosaur", 3)
             )
