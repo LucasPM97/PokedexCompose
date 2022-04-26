@@ -24,8 +24,7 @@ fun PokemonImage(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.size(imageSize.dp)
-            .background(Color.Red),
+        modifier = modifier.size(imageSize.dp),
         contentAlignment = Alignment.Center,
 
     ) {

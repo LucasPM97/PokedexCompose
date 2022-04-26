@@ -1,5 +1,6 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
+import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,17 +16,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
-import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
+import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 
 @Composable
 fun PokemonInfoScreen(
     navController: NavController,
-    viewModel: PokemonInfoViewModel
+    viewModel: PokemonInfoViewModel,
+    speech: TextToSpeech? = null
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -41,7 +43,8 @@ fun PokemonInfoScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            PokemonInfoBox(state, navController)
+
+            PokemonInfoBox(state, navController, speech)
             Spacer(modifier = Modifier.height(10.dp))
             PokemonDescriptionBox(state.description)
         }
@@ -51,42 +54,54 @@ fun PokemonInfoScreen(
 @Composable
 private fun PokemonInfoBox(
     state: PokemonInfoUiState,
-    navController: NavController? = null
+    navController: NavController? = null,
+    speech: TextToSpeech? = null
 ) {
     PokeCardBox {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-            PokemonImage(
-                pokemonId = state.pokemonNumber,
-                imageSize = 240,
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Row() {
-                Text(
-                    text = state.pokemonNumber.threeDigitsString()
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = state.pokemonName
-                        .replaceFirstChar {
-                            it.uppercase()
-                        }
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                SpeechInfoButton(state, speech)
             }
-            Spacer(modifier = Modifier.height(20.dp))
-            state.pokemonInfo?.let {
-                PokemonStats(
-                    pokemonInfo = it,
-                    onTypeClick = {
-                        navController?.navigateToPokemonTypeInfoScreen(
-                            it
-                        )
-                    }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                PokemonImage(
+                    pokemonId = state.pokemonNumber,
+                    imageSize = 240,
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                Row() {
+                    Text(
+                        text = state.pokemonNumber.threeDigitsString()
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = state.pokemonName
+                            .replaceFirstChar {
+                                it.uppercase()
+                            }
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                state.pokemonInfo?.let {
+                    PokemonStats(
+                        pokemonInfo = it,
+                        onTypeClick = {
+                            navController?.navigateToPokemonTypeInfoScreen(
+                                it
+                            )
+                        }
+                    )
+                }
             }
         }
     }
