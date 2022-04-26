@@ -1,14 +1,21 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +48,7 @@ fun PokemonInfoScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
             PokemonInfoBox(state, navController)
             Spacer(modifier = Modifier.height(10.dp))
             PokemonDescriptionBox(state.description)
@@ -55,38 +63,49 @@ private fun PokemonInfoBox(
 ) {
     PokeCardBox {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-            PokemonImage(
-                pokemonId = state.pokemonNumber,
-                imageSize = 240,
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Row() {
-                Text(
-                    text = state.pokemonNumber.threeDigitsString()
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = state.pokemonName
-                        .replaceFirstChar {
-                            it.uppercase()
-                        }
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                SpeechInfoButton(state)
             }
-            Spacer(modifier = Modifier.height(20.dp))
-            state.pokemonInfo?.let {
-                PokemonStats(
-                    pokemonInfo = it,
-                    onTypeClick = {
-                        navController?.navigateToPokemonTypeInfoScreen(
-                            it
-                        )
-                    }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                PokemonImage(
+                    pokemonId = state.pokemonNumber,
+                    imageSize = 240,
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                Row() {
+                    Text(
+                        text = state.pokemonNumber.threeDigitsString()
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = state.pokemonName
+                            .replaceFirstChar {
+                                it.uppercase()
+                            }
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                state.pokemonInfo?.let {
+                    PokemonStats(
+                        pokemonInfo = it,
+                        onTypeClick = {
+                            navController?.navigateToPokemonTypeInfoScreen(
+                                it
+                            )
+                        }
+                    )
+                }
             }
         }
     }
