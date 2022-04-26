@@ -1,38 +1,33 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
-import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
+import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 
 @Composable
 fun PokemonInfoScreen(
     navController: NavController,
-    viewModel: PokemonInfoViewModel
+    viewModel: PokemonInfoViewModel,
+    speech: TextToSpeech? = null
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -49,7 +44,7 @@ fun PokemonInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            PokemonInfoBox(state, navController)
+            PokemonInfoBox(state, navController, speech)
             Spacer(modifier = Modifier.height(10.dp))
             PokemonDescriptionBox(state.description)
         }
@@ -59,7 +54,8 @@ fun PokemonInfoScreen(
 @Composable
 private fun PokemonInfoBox(
     state: PokemonInfoUiState,
-    navController: NavController? = null
+    navController: NavController? = null,
+    speech: TextToSpeech? = null
 ) {
     PokeCardBox {
         Column(
@@ -71,7 +67,7 @@ private fun PokemonInfoBox(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                SpeechInfoButton(state)
+                SpeechInfoButton(state, speech)
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

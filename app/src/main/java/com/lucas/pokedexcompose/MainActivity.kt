@@ -1,6 +1,8 @@
 package com.lucas.pokedexcompose
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
@@ -22,27 +24,57 @@ import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonListScreenName
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoArguments
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonTypeInfoScreenName
 import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonTypeInfoArguments
+import java.util.*
 
 class MainActivity : ComponentActivity() {
+
+    var speech: TextToSpeech? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            PokedexComposeTheme {
-                App()
+
+        speech = TextToSpeech(
+            this
+        ) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                // set US English as language for tts
+                val result = speech?.setLanguage(Locale.US)
+
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e("TTS", "The Language specified is not supported!")
+                }
+
+            } else {
+                Log.e("TTS", "Initilization Failed!")
             }
         }
+
+        setContent {
+            PokedexComposeTheme {
+                App(speech)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        speech?.stop()
     }
 }
 
 @Composable
-fun App() {
+fun App(
+    speech: TextToSpeech?
+) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = PokemonListScreenName
+        startDestination = PokemonListScreenName,
     ) {
+
         composable(PokemonListScreenName) {
+            speech?.stop()
             PokemonListScreen(navController = navController)
         }
         composable("$PokemonInfoScreenName/" +
@@ -72,7 +104,8 @@ fun App() {
                         pokemonNumber = pokemonNumber ?: 1,
                         pokemonName = pokemonName ?: "Dummy"
                     )
-                )
+                ),
+                speech
             )
         }
         composable("$PokemonTypeInfoScreenName/{${PokemonTypeInfoArguments.PokemonTypeName}}",
@@ -81,6 +114,7 @@ fun App() {
                     type = NavType.StringType
                 }
             )) {
+            speech?.stop()
 
             val pokemonTypeName = remember {
                 it.arguments?.getString(PokemonTypeInfoArguments.PokemonTypeName)

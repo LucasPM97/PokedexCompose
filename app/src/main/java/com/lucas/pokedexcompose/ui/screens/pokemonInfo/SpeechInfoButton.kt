@@ -1,60 +1,40 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.VolumeUp
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
-import java.util.*
 
 @Composable
 fun SpeechInfoButton(
-    state: PokemonInfoUiState
+    state: PokemonInfoUiState? = null,
+    speech: TextToSpeech? = null
 ) {
 
-    val context = LocalContext.current
-
-    var speech by remember {
-        mutableStateOf<TextToSpeech?>(
-            null
-        )
+    val textToSpeech = if (state == null) ""
+    else {
+        "${state.pokemonName}. " +
+                getPokemonTypeText(state.pokemonInfo?.types ?: emptyList()) +
+                (state.description ?: "")
     }
-
-    LaunchedEffect(Unit) {
-        speech = TextToSpeech(
-            context
-        ) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                // set US English as language for tts
-                val result = speech?.setLanguage(Locale.US)
-
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Log.e("TTS", "The Language specified is not supported!")
-                }
-
-            } else {
-                Log.e("TTS", "Initilization Failed!")
-            }
-        }
-    }
-
-    val textToSpeech = "${state.pokemonName}. " +
-            getPokemonTypeText(state.pokemonInfo!!.types) +
-            (state.description ?: "")
 
     IconButton(
         modifier = Modifier.size(40.dp),
         onClick = {
-            speech!!.speak(textToSpeech, TextToSpeech.QUEUE_FLUSH, null, "")
+            speech?.speak(
+                textToSpeech,
+                TextToSpeech.QUEUE_FLUSH,
+                null,
+                ""
+            )
         }) {
         Icon(
             imageVector = Icons.Rounded.VolumeUp,
@@ -87,6 +67,6 @@ fun getPokemonTypeText(
 @Preview
 fun PreviewSpeechInfoButton() {
     PokedexComposeTheme {
-//        SpeechInfoButton()
+        SpeechInfoButton()
     }
 }
