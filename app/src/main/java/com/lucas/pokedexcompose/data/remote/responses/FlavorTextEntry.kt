@@ -1,7 +1,9 @@
 package com.lucas.pokedexcompose.data.remote.responses
 
+import com.google.gson.annotations.SerializedName
+
 data class FlavorTextEntry(
-    val flavor_text: String,
+    @SerializedName("flavor_text") val flavorText: String,
     val language: Language,
     val version: Version
 )

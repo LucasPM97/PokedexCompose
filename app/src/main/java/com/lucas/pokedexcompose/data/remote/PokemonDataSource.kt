@@ -1,8 +1,8 @@
 package com.lucas.pokedexcompose.data.remote
 
-import com.lucas.pokedexcompose.data.remote.responses.PokemonDescriptionResponse
 import com.lucas.pokedexcompose.data.remote.responses.PokemonInfo
 import com.lucas.pokedexcompose.data.remote.responses.PokemonListResponse
+import com.lucas.pokedexcompose.data.remote.responses.PokemonSpeciesResponse
 import com.lucas.pokedexcompose.data.remote.responses.PokemonTypeInfo
 
 class PokemonDataSource(
@@ -19,7 +19,7 @@ class PokemonDataSource(
         return api.getPokemonInfo(pokemonName)
     }
 
-    override suspend fun getPokemonDescriptionData(pokemonName: String): PokemonDescriptionResponse {
+    override suspend fun getPokemonDescriptionData(pokemonName: String): PokemonSpeciesResponse {
         return api.getPokemonDescription(pokemonName)
     }
 
@@ -31,6 +31,6 @@ class PokemonDataSource(
 interface IPokemonDataSource {
     suspend fun getPokemonListData(limit: Int, offset: Int): PokemonListResponse
     suspend fun getPokemonInfoData(pokemonName: String): PokemonInfo
-    suspend fun getPokemonDescriptionData(pokemonName: String): PokemonDescriptionResponse
+    suspend fun getPokemonDescriptionData(pokemonName: String): PokemonSpeciesResponse
     suspend fun getPokemonTypeInfoData(pokemonType: String): PokemonTypeInfo
 }

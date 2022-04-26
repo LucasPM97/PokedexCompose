@@ -34,7 +34,7 @@ class PokemonRepository(
         }
     }
 
-    override suspend fun getPokemonDescription(pokemonName: String): Response<PokemonDescriptionResponse> {
+    override suspend fun getPokemonDescription(pokemonName: String): Response<PokemonSpeciesResponse> {
         return withContext(Dispatchers.IO) {
             val response = try {
                 dataSource.getPokemonDescriptionData(pokemonName)
@@ -63,6 +63,6 @@ class PokemonRepository(
 interface IPokemonRepository {
     suspend fun getPokemonList(limit: Int, offset: Int): Response<PokemonListResponse>
     suspend fun getPokemonInfo(pokemonName: String): Response<PokemonInfo>
-    suspend fun getPokemonDescription(pokemonName: String): Response<PokemonDescriptionResponse>
+    suspend fun getPokemonDescription(pokemonName: String): Response<PokemonSpeciesResponse>
     suspend fun getPokemonTypeInfo(pokemonType: String): Response<PokemonTypeInfo>
 }

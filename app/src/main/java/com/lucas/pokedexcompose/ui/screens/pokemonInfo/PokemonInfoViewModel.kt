@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucas.pokedexcompose.R
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
+import com.lucas.pokedexcompose.data.models.PokemonSpeciesEntry
 import com.lucas.pokedexcompose.data.remote.responses.Response
 import com.lucas.pokedexcompose.data.repositories.IPokemonRepository
+import com.lucas.pokedexcompose.utils.extensions.getPokemonNumberFromUrl
 import com.lucas.pokedexcompose.utils.extensions.removeEndLineEntries
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +35,7 @@ class PokemonInfoViewModel(
 
     init {
         getPokemonInfo()
-        getPokemonDescription()
+        getPokemonSpeciesInfo()
     }
 
     private fun getPokemonInfo() {
@@ -84,12 +86,12 @@ class PokemonInfoViewModel(
         }
     }
 
-    private fun getPokemonDescription() {
-        if (uiState.value.loadingDescription) return
+    private fun getPokemonSpeciesInfo() {
+        if (uiState.value.loadingSpeciesInfo) return
 
         _uiState.update {
             it.copy(
-                loadingDescription = true
+                loadingSpeciesInfo = true
             )
         }
 
@@ -103,18 +105,26 @@ class PokemonInfoViewModel(
 
                 is Response.Success -> {
                     response.data?.let { data ->
-                        val flavorText = data.flavor_text_entries.firstOrNull {
+                        val flavorText = data.flavorTextEntries.firstOrNull {
                             it.language.name == "en"
                         }
 
                         val description: String =
-                            flavorText?.flavor_text?.removeEndLineEntries()
+                            flavorText?.flavorText?.removeEndLineEntries()
                                 ?: "This pokemon has no description"
 
 
                         _uiState.update {
                             it.copy(
-                                description = description
+                                speciesInfo = PokemonSpeciesEntry(
+                                    description = description,
+                                    habitatName = data.habitat?.name,
+                                    evolvesFromName = data.evolvesFrom?.name,
+                                    evolvesFromNumber = data.evolvesFrom?.url?.getPokemonNumberFromUrl(),
+                                    hasGenderDifferences = data.hasGenderDifferences,
+                                    isLegendary = data.isLegendary,
+                                    captureRate = data.captureRate
+                                )
                             )
                         }
                     }
@@ -133,7 +143,7 @@ class PokemonInfoViewModel(
 
             _uiState.update {
                 it.copy(
-                    loadingDescription = false
+                    loadingSpeciesInfo = false
                 )
             }
         }
@@ -146,8 +156,8 @@ data class PokemonInfoUiState(
     val pokemonName: String,
     val loadingInfo: Boolean = false,
     val pokemonInfo: PokemonInfoEntry? = null,
-    val loadingDescription: Boolean = false,
-    val description: String? = null,
+    val loadingSpeciesInfo: Boolean = false,
+    val speciesInfo: PokemonSpeciesEntry? = null,
     @StringRes val errorStringId: Int? = null
 
 )

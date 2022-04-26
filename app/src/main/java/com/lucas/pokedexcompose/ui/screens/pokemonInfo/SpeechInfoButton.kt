@@ -22,8 +22,15 @@ fun SpeechInfoButton(
     val textToSpeech = if (state == null) ""
     else {
         "${state.pokemonName}. " +
-                getPokemonTypeText(state.pokemonInfo?.types ?: emptyList()) +
-                (state.description ?: "")
+                getEvolutionFromText(state.speciesInfo?.evolvesFromName) +
+                getPokemonTypeText(
+                    state.pokemonInfo?.types,
+                    state.speciesInfo?.isLegendary
+                ) +
+                getDescriptionText(state.speciesInfo?.description) +
+                getEasyToCaptureText(state.speciesInfo?.captureRate) +
+                getHabitatText(state.speciesInfo?.habitatName)
+
     }
 
     IconButton(
@@ -43,12 +50,42 @@ fun SpeechInfoButton(
     }
 }
 
+fun getEasyToCaptureText(captureRate: Int?): String {
+    return when {
+        captureRate == null -> ""
+        captureRate > 200 ->
+            "It is gentle and easy to capture. A perfect target for a beginner pokemon trainer to test its Pokemon's skills"
+        else -> ""
+    } + ". "
+}
+
+fun getEvolutionFromText(evolvesFrom: String?): String {
+    return if (evolvesFrom == null) ""
+    else "Evolved form of ${
+        evolvesFrom.replaceFirstChar {
+            it.uppercase()
+        }
+    }. "
+}
+
+fun getIsLegendaryPokemonText(isLegendary: Boolean?): String {
+    return if (isLegendary == true) "legendary " else ""
+}
+
+fun getHabitatText(habitat: String?): String {
+    return if (habitat == null) ""
+    else if (habitat == "rare")
+        "Its habitat is unknown. "
+    else "It is seems at ${habitat}s. "
+}
+
 fun getPokemonTypeText(
-    types: List<TypeInfo>
+    types: List<TypeInfo>?,
+    isLegendary: Boolean?
 ): String {
     var pokemonTypeText = ""
 
-    if (types.any()) {
+    types?.let {
         types.forEachIndexed { index, typeInfo ->
             if (index == 0) {
                 pokemonTypeText += typeInfo.name
@@ -57,10 +94,18 @@ fun getPokemonTypeText(
             }
             pokemonTypeText += " "
         }
-        pokemonTypeText += "pokemon. "
     }
+    pokemonTypeText += getIsLegendaryPokemonText(isLegendary)
+    pokemonTypeText += "pokemon. "
 
     return pokemonTypeText
+}
+
+fun getDescriptionText(description: String?): String {
+    if (description == null) return ""
+
+    return "${description} "
+
 }
 
 @Composable

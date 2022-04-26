@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
+import com.lucas.pokedexcompose.data.models.PokemonSpeciesEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
@@ -32,7 +33,7 @@ fun PokemonInfoScreen(
     val state by viewModel.uiState.collectAsState()
 
     PokeScreen(
-        isLoading = state.loadingInfo || state.loadingDescription,
+        isLoading = state.loadingInfo || state.loadingSpeciesInfo,
         navController = navController
     ) {
         Column(
@@ -46,7 +47,10 @@ fun PokemonInfoScreen(
 
             PokemonInfoBox(state, navController, speech)
             Spacer(modifier = Modifier.height(10.dp))
-            PokemonDescriptionBox(state.description)
+
+            state.speciesInfo?.let {
+                PokemonDescriptionBox(state.speciesInfo?.description)
+            }
         }
     }
 }
@@ -145,7 +149,15 @@ fun PreviewPokemonInfoScreen() {
         ),
         pokemonName = "Charizard",
         pokemonNumber = 7,
-        description = "This is a not too long description"
+        speciesInfo = PokemonSpeciesEntry(
+            captureRate = 45,
+            habitatName = "mountain",
+            isLegendary = false,
+            description = "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.",
+            evolvesFromName = "charmeleon",
+            evolvesFromNumber = 5,
+            hasGenderDifferences = false
+        )
     )
 
     PokedexComposeTheme {
@@ -159,7 +171,7 @@ fun PreviewPokemonInfoScreen() {
             ) {
                 PokemonInfoBox(state)
                 Spacer(modifier = Modifier.height(10.dp))
-                PokemonDescriptionBox(state.description)
+                PokemonDescriptionBox(state.speciesInfo?.description)
             }
         }
     }
