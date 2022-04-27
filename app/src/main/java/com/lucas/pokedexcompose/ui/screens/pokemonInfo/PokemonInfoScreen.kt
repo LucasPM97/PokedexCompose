@@ -1,15 +1,19 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
 import android.speech.tts.TextToSpeech
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Female
+import androidx.compose.material.icons.filled.Male
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,6 +24,7 @@ import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
+import com.lucas.pokedexcompose.ui.composables.navigation.BottomBarRowIconButton
 import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
@@ -32,11 +37,21 @@ fun PokemonInfoScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
 
+    var maleGender by remember {
+        mutableStateOf(true)
+    }
+
     PokeScreen(
         isLoading = state.loadingInfo || state.loadingSpeciesInfo,
         navController = navController,
         bottomBarContent = {
             SpeechInfoButton(state, speech)
+            GenderButton(
+                state.speciesInfo?.hasGenderDifferences,
+                maleGender
+            ) {
+                maleGender = !maleGender
+            }
         }
     ) {
         Column(
@@ -48,7 +63,7 @@ fun PokemonInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            PokemonInfoBox(state, navController)
+            PokemonInfoBox(state, maleGender, navController)
             Spacer(modifier = Modifier.height(10.dp))
 
             state.speciesInfo?.let {
@@ -59,9 +74,26 @@ fun PokemonInfoScreen(
 }
 
 @Composable
+private fun GenderButton(
+    isVisible: Boolean?,
+    maleGender: Boolean,
+    onClick: () -> Unit = {}
+) {
+    if (isVisible != true) return
+    BottomBarRowIconButton(
+        icon = if (maleGender) Icons.Filled.Male
+        else Icons.Filled.Female,
+        text = if (maleGender) "Male" else "Female"
+    ) {
+        onClick()
+    }
+}
+
+@Composable
 private fun PokemonInfoBox(
     state: PokemonInfoUiState,
-    navController: NavController? = null
+    maleGender: Boolean,
+    navController: NavController? = null,
 ) {
     PokeCardBox {
         Column(
@@ -73,6 +105,7 @@ private fun PokemonInfoBox(
             PokemonImage(
                 pokemonId = state.pokemonNumber,
                 imageSize = 240,
+                genderMale = maleGender
             )
             Spacer(modifier = Modifier.height(20.dp))
             Row() {
@@ -161,7 +194,7 @@ fun PreviewPokemonInfoScreen() {
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                PokemonInfoBox(state)
+                PokemonInfoBox(state, maleGender = true)
                 Spacer(modifier = Modifier.height(10.dp))
                 PokemonDescriptionBox(state.speciesInfo?.description)
             }
