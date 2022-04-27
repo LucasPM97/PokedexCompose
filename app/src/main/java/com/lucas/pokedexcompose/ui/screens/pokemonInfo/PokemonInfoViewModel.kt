@@ -123,6 +123,7 @@ class PokemonInfoViewModel(
                                     evolvesFromNumber = data.evolvesFrom?.url?.getPokemonNumberFromUrl(),
                                     hasGenderDifferences = data.hasGenderDifferences,
                                     isLegendary = data.isLegendary,
+                                    isMythical = data.isMythical,
                                     captureRate = data.captureRate
                                 )
                             )

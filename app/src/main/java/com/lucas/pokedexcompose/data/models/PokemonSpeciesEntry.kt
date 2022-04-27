@@ -7,5 +7,6 @@ data class PokemonSpeciesEntry(
     val habitatName: String?,
     val captureRate: Int,
     val hasGenderDifferences: Boolean,
-    val isLegendary: Boolean
+    val isLegendary: Boolean,
+    val isMythical: Boolean
 )

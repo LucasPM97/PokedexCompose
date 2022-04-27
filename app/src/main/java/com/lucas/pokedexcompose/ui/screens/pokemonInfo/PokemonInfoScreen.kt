@@ -150,13 +150,14 @@ fun PreviewPokemonInfoScreen() {
         pokemonName = "Charizard",
         pokemonNumber = 7,
         speciesInfo = PokemonSpeciesEntry(
-            captureRate = 45,
-            habitatName = "mountain",
-            isLegendary = false,
             description = "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.",
             evolvesFromName = "charmeleon",
             evolvesFromNumber = 5,
-            hasGenderDifferences = false
+            habitatName = "mountain",
+            captureRate = 45,
+            hasGenderDifferences = false,
+            isLegendary = false,
+            isMythical = false
         )
     )
 

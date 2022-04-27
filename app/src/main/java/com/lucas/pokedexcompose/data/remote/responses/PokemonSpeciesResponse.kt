@@ -8,5 +8,6 @@ data class PokemonSpeciesResponse(
     @SerializedName("evolves_from_species") val evolvesFrom: EvolvesFromSpecies?,
     val habitat: Habitat?,
     @SerializedName("has_gender_differences") val hasGenderDifferences: Boolean,
-    @SerializedName("is_legendary") val isLegendary: Boolean
+    @SerializedName("is_legendary") val isLegendary: Boolean,
+    @SerializedName("is_mythical") val isMythical: Boolean
 )

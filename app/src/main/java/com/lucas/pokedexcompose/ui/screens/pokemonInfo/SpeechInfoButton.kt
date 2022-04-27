@@ -25,7 +25,8 @@ fun SpeechInfoButton(
                 getEvolutionFromText(state.speciesInfo?.evolvesFromName) +
                 getPokemonTypeText(
                     state.pokemonInfo?.types,
-                    state.speciesInfo?.isLegendary
+                    state.speciesInfo?.isLegendary,
+                    state.speciesInfo?.isMythical
                 ) +
                 getDescriptionText(state.speciesInfo?.description) +
                 getEasyToCaptureText(state.speciesInfo?.captureRate) +
@@ -54,9 +55,9 @@ fun getEasyToCaptureText(captureRate: Int?): String {
     return when {
         captureRate == null -> ""
         captureRate > 200 ->
-            "It is gentle and easy to capture. A perfect target for a beginner pokemon trainer to test its Pokemon's skills"
+            "It is gentle and easy to capture. A perfect target for a beginner pokemon trainer to test its Pokemon's skills. "
         else -> ""
-    } + ". "
+    }
 }
 
 fun getEvolutionFromText(evolvesFrom: String?): String {
@@ -68,8 +69,15 @@ fun getEvolutionFromText(evolvesFrom: String?): String {
     }. "
 }
 
-fun getIsLegendaryPokemonText(isLegendary: Boolean?): String {
-    return if (isLegendary == true) "legendary " else ""
+fun getIsLegendaryPokemonText(
+    isLegendary: Boolean?,
+    isMythical: Boolean?
+): String {
+    return when {
+        isLegendary == true -> "legendary "
+        isMythical == true -> "mythical "
+        else -> ""
+    }
 }
 
 fun getHabitatText(habitat: String?): String {
@@ -81,9 +89,11 @@ fun getHabitatText(habitat: String?): String {
 
 fun getPokemonTypeText(
     types: List<TypeInfo>?,
-    isLegendary: Boolean?
+    isLegendary: Boolean?,
+    isMythical: Boolean?
 ): String {
     var pokemonTypeText = ""
+    pokemonTypeText += getIsLegendaryPokemonText(isLegendary, isMythical)
 
     types?.let {
         types.forEachIndexed { index, typeInfo ->
@@ -95,7 +105,6 @@ fun getPokemonTypeText(
             pokemonTypeText += " "
         }
     }
-    pokemonTypeText += getIsLegendaryPokemonText(isLegendary)
     pokemonTypeText += "pokemon. "
 
     return pokemonTypeText
