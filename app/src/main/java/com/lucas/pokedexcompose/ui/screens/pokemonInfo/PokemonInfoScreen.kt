@@ -34,7 +34,10 @@ fun PokemonInfoScreen(
 
     PokeScreen(
         isLoading = state.loadingInfo || state.loadingSpeciesInfo,
-        navController = navController
+        navController = navController,
+        bottomBarContent = {
+            SpeechInfoButton(state, speech)
+        }
     ) {
         Column(
             modifier = Modifier
@@ -45,7 +48,7 @@ fun PokemonInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            PokemonInfoBox(state, navController, speech)
+            PokemonInfoBox(state, navController)
             Spacer(modifier = Modifier.height(10.dp))
 
             state.speciesInfo?.let {
@@ -58,54 +61,42 @@ fun PokemonInfoScreen(
 @Composable
 private fun PokemonInfoBox(
     state: PokemonInfoUiState,
-    navController: NavController? = null,
-    speech: TextToSpeech? = null
+    navController: NavController? = null
 ) {
     PokeCardBox {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp)
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                SpeechInfoButton(state, speech)
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                PokemonImage(
-                    pokemonId = state.pokemonNumber,
-                    imageSize = 240,
+            PokemonImage(
+                pokemonId = state.pokemonNumber,
+                imageSize = 240,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Row() {
+                Text(
+                    text = state.pokemonNumber.threeDigitsString()
                 )
-                Spacer(modifier = Modifier.height(20.dp))
-                Row() {
-                    Text(
-                        text = state.pokemonNumber.threeDigitsString()
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = state.pokemonName
-                            .replaceFirstChar {
-                                it.uppercase()
-                            }
-                    )
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-                state.pokemonInfo?.let {
-                    PokemonStats(
-                        pokemonInfo = it,
-                        onTypeClick = {
-                            navController?.navigateToPokemonTypeInfoScreen(
-                                it
-                            )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = state.pokemonName
+                        .replaceFirstChar {
+                            it.uppercase()
                         }
-                    )
-                }
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            state.pokemonInfo?.let {
+                PokemonStats(
+                    pokemonInfo = it,
+                    onTypeClick = {
+                        navController?.navigateToPokemonTypeInfoScreen(
+                            it
+                        )
+                    }
+                )
             }
         }
     }

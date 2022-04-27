@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
-import com.lucas.pokedexcompose.utils.PokemonTypeColorHelper
+import com.lucas.pokedexcompose.utils.helpers.PokemonTypeColorHelper
 
 @Composable
 fun PokemonTypeBox(

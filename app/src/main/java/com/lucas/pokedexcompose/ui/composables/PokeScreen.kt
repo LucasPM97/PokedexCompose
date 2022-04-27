@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lucas.pokedexcompose.ui.composables.navigation.BottomBar
 import com.lucas.pokedexcompose.ui.theme.PokedexBackground
@@ -17,11 +18,16 @@ import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 fun PokeScreen(
     isLoading: Boolean = false,
     navController: NavController? = null,
+    bottomBarContent: @Composable RowScope.() -> Unit = {
+        Spacer(modifier = Modifier.width(1.dp))
+    },
     content: @Composable BoxScope.() -> Unit,
 ) {
     Scaffold(
         bottomBar = {
-            BottomBar(navController)
+            BottomBar(navController) {
+                bottomBarContent()
+            }
         }
     ) {
         Surface(

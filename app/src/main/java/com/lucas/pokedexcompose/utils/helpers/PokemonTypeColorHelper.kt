@@ -1,4 +1,4 @@
-package com.lucas.pokedexcompose.utils
+package com.lucas.pokedexcompose.utils.helpers
 
 import androidx.compose.ui.graphics.Color
 import com.lucas.pokedexcompose.ui.theme.*
