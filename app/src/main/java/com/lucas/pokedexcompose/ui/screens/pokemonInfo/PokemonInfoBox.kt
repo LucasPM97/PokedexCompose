@@ -53,12 +53,7 @@ fun PokemonInfoBox(
                         }
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    imageVector = if (maleGender) Icons.Filled.Male
-                    else Icons.Filled.Female,
-                    contentDescription = "",
-                    tint = Color.Black
-                )
+                GenderIcon(maleGender)
             }
             Spacer(modifier = Modifier.height(20.dp))
             state.pokemonInfo?.let {
@@ -73,6 +68,16 @@ fun PokemonInfoBox(
             }
         }
     }
+}
+
+@Composable
+private fun GenderIcon(maleGender: Boolean) {
+    Icon(
+        imageVector = if (maleGender) Icons.Filled.Male
+        else Icons.Filled.Female,
+        contentDescription = "",
+        tint = Color.Black
+    )
 }
 
 @Composable

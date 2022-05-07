@@ -4,6 +4,7 @@ import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +14,8 @@ import androidx.navigation.NavController
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.models.PokemonSpeciesEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
+import com.lucas.pokedexcompose.ui.composables.HabitatIcon
+import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
@@ -53,7 +56,16 @@ fun PokemonInfoScreen(
             state.speciesInfo?.let {
                 PokemonDescriptionBox(state.speciesInfo?.description)
                 Spacer(modifier = Modifier.height(10.dp))
-
+                PokeCardBox {
+                    Column(
+                        Modifier.padding(20.dp),
+                    ) {
+                        Text(text = "Habitat")
+                        HabitatIcon(
+                            state.speciesInfo?.habitatName
+                        )
+                    }
+                }
 
             }
         }
