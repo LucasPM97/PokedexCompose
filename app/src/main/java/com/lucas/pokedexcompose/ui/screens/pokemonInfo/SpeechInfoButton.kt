@@ -15,6 +15,12 @@ fun SpeechInfoButton(
     speech: TextToSpeech? = null
 ) {
 
+    if (state.pokemonInfo == null ||
+        state.speciesInfo == null
+    ) {
+        return
+    }
+
     val textToSpeech = TextToSpeechHelper.getPokemonInfoTextToSpeech(
         pokemonName = state.pokemonName,
         pokemonInfo = state.pokemonInfo,

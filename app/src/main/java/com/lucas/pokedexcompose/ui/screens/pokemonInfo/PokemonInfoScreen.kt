@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.lucas.pokedexcompose.data.models.HabitatTypes
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.models.PokemonSpeciesEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
@@ -36,7 +37,7 @@ fun PokemonInfoScreen(
         navController = navController,
         bottomBarContent = {
             SpeechInfoButton(state, speech)
-            GenderButton(state.speciesInfo?.hasGenderDifferences, !maleGender) {
+            GenderButton(state.speciesInfo, !maleGender) {
                 maleGender = !maleGender
             }
         }
@@ -53,20 +54,38 @@ fun PokemonInfoScreen(
             PokemonInfoBox(state, maleGender, navController)
             Spacer(modifier = Modifier.height(10.dp))
 
-            state.speciesInfo?.let {
+            state.speciesInfo?.let { speciesInfo ->
                 PokemonDescriptionBox(state.speciesInfo?.description)
                 Spacer(modifier = Modifier.height(10.dp))
-                PokeCardBox {
-                    Column(
-                        Modifier.padding(20.dp),
-                    ) {
-                        Text(text = "Habitat")
-                        HabitatIcon(
-                            state.speciesInfo?.habitatName
-                        )
-                    }
-                }
+                PokemonHabitatBox(speciesInfo)
 
+            }
+        }
+    }
+}
+
+@Composable
+fun PokemonHabitatBox(speciesInfo: PokemonSpeciesEntry) {
+    speciesInfo.habitatName?.let { habitatName ->
+        PokeCardBox {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+            ) {
+                Text(text = "Habitat")
+                HabitatIcon(
+                    habitat = HabitatTypes.values().firstOrNull {
+                        it.name.lowercase() == habitatName
+                    },
+                    size = 50
+                )
+                Text(
+                    text = habitatName
+                        .replaceFirstChar {
+                            it.uppercase()
+                        }
+                )
             }
         }
     }
