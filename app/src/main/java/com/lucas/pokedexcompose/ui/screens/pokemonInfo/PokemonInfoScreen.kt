@@ -4,7 +4,6 @@ import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,8 +14,6 @@ import com.lucas.pokedexcompose.data.models.HabitatTypes
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.models.PokemonSpeciesEntry
 import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
-import com.lucas.pokedexcompose.ui.composables.HabitatIcon
-import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
@@ -51,41 +48,15 @@ fun PokemonInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            PokemonInfoBox(state, maleGender, navController)
+            PokemonInfoBox(
+                state = state,
+                maleGender = maleGender,
+                showGender = state.speciesInfo?.hasGenderDifferences == true,
+                navController
+            )
             Spacer(modifier = Modifier.height(10.dp))
-
             state.speciesInfo?.let { speciesInfo ->
                 PokemonDescriptionBox(state.speciesInfo?.description)
-                Spacer(modifier = Modifier.height(10.dp))
-                PokemonHabitatBox(speciesInfo)
-
-            }
-        }
-    }
-}
-
-@Composable
-fun PokemonHabitatBox(speciesInfo: PokemonSpeciesEntry) {
-    speciesInfo.habitatName?.let { habitatName ->
-        PokeCardBox {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-            ) {
-                Text(text = "Habitat")
-                HabitatIcon(
-                    habitat = HabitatTypes.values().firstOrNull {
-                        it.name.lowercase() == habitatName
-                    },
-                    size = 50
-                )
-                Text(
-                    text = habitatName
-                        .replaceFirstChar {
-                            it.uppercase()
-                        }
-                )
             }
         }
     }
@@ -116,7 +87,7 @@ fun PreviewPokemonInfoScreen() {
             description = "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.",
             evolvesFromName = "charmeleon",
             evolvesFromNumber = 5,
-            habitatName = "mountain",
+            habitat = HabitatTypes.Mountain,
             captureRate = 45,
             hasGenderDifferences = false,
             isLegendary = false,
@@ -133,7 +104,7 @@ fun PreviewPokemonInfoScreen() {
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                PokemonInfoBox(state, maleGender = true)
+                PokemonInfoBox(state, maleGender = true, showGender = true)
                 Spacer(modifier = Modifier.height(10.dp))
                 PokemonDescriptionBox(state.speciesInfo?.description)
             }

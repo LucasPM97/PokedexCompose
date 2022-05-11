@@ -19,7 +19,7 @@ object TextToSpeechHelper {
                 ) +
                 getDescriptionText(speciesInfo?.description) +
                 getEasyToCaptureText(speciesInfo?.captureRate) +
-                getHabitatText(speciesInfo?.habitatName)
+                getHabitatText(speciesInfo?.habitat.toString())
     }
 
 

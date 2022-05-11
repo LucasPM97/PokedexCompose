@@ -4,7 +4,7 @@ data class PokemonSpeciesEntry(
     val description: String,
     val evolvesFromName: String?,
     val evolvesFromNumber: Int?,
-    val habitatName: String?,
+    val habitat: HabitatTypes?,
     val captureRate: Int,
     val hasGenderDifferences: Boolean,
     val isLegendary: Boolean,

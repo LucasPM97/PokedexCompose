@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucas.pokedexcompose.R
+import com.lucas.pokedexcompose.data.models.HabitatTypes
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
 import com.lucas.pokedexcompose.data.models.PokemonSpeciesEntry
 import com.lucas.pokedexcompose.data.remote.responses.Response
@@ -118,7 +119,12 @@ class PokemonInfoViewModel(
                             it.copy(
                                 speciesInfo = PokemonSpeciesEntry(
                                     description = description,
-                                    habitatName = data.habitat?.name,
+                                    habitat = HabitatTypes.values().firstOrNull { habitatType ->
+                                        habitatType.name.lowercase() == data.habitat?.name?.replace(
+                                            "-",
+                                            ""
+                                        )
+                                    },
                                     evolvesFromName = data.evolvesFrom?.name,
                                     evolvesFromNumber = data.evolvesFrom?.url?.getPokemonNumberFromUrl(),
                                     hasGenderDifferences = data.hasGenderDifferences,

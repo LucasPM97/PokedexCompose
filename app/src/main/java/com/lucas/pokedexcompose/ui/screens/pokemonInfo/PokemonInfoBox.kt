@@ -13,7 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.lucas.pokedexcompose.data.models.HabitatTypes
 import com.lucas.pokedexcompose.data.models.PokemonInfoEntry
+import com.lucas.pokedexcompose.ui.composables.HabitatIcon
 import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
 import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
@@ -24,49 +26,70 @@ import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 fun PokemonInfoBox(
     state: PokemonInfoUiState,
     maleGender: Boolean,
+    showGender: Boolean,
     navController: NavController? = null,
 ) {
     PokeCardBox {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(20.dp)
         ) {
-            PokemonImage(
-                pokemonId = state.pokemonNumber,
-                imageSize = 240,
-                genderMale = maleGender
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+            HabitatHeader(state.speciesInfo?.habitat)
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = state.pokemonNumber.threeDigitsString()
+                PokemonImage(
+                    pokemonId = state.pokemonNumber,
+                    imageSize = 240,
+                    genderMale = maleGender
                 )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = state.pokemonName
-                        .replaceFirstChar {
-                            it.uppercase()
-                        }
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                GenderIcon(maleGender)
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            state.pokemonInfo?.let {
-                PokemonStats(
-                    pokemonInfo = it,
-                    onTypeClick = {
-                        navController?.navigateToPokemonTypeInfoScreen(
-                            it
-                        )
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = state.pokemonNumber.threeDigitsString()
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = state.pokemonName
+                            .replaceFirstChar {
+                                it.uppercase()
+                            }
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    if (showGender) {
+                        GenderIcon(maleGender)
                     }
-                )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                state.pokemonInfo?.let {
+                    PokemonStats(
+                        pokemonInfo = it,
+                        onTypeClick = {
+                            navController?.navigateToPokemonTypeInfoScreen(
+                                it
+                            )
+                        }
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun HabitatHeader(habitat: HabitatTypes?) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        HabitatIcon(
+            habitat = habitat,
+            size = 50
+        )
     }
 }
 
@@ -105,7 +128,8 @@ fun PreviewPokemonInfoBox() {
     PokedexComposeTheme {
         PokemonInfoBox(
             state = state,
-            maleGender = true
+            maleGender = true,
+            showGender = true,
         )
     }
 }
