@@ -26,7 +26,6 @@ import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 fun PokemonInfoBox(
     state: PokemonInfoUiState,
     maleGender: Boolean,
-    showGender: Boolean,
     navController: NavController? = null,
 ) {
     PokeCardBox {
@@ -60,7 +59,7 @@ fun PokemonInfoBox(
                             }
                     )
                     Spacer(modifier = Modifier.width(10.dp))
-                    if (showGender) {
+                    if (state.speciesInfo?.hasGenderDifferences == true) {
                         GenderIcon(maleGender)
                     }
                 }
@@ -128,8 +127,7 @@ fun PreviewPokemonInfoBox() {
     PokedexComposeTheme {
         PokemonInfoBox(
             state = state,
-            maleGender = true,
-            showGender = true,
+            maleGender = true
         )
     }
 }

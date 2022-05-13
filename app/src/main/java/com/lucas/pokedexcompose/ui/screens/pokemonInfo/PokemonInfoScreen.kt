@@ -51,7 +51,6 @@ fun PokemonInfoScreen(
             PokemonInfoBox(
                 state = state,
                 maleGender = maleGender,
-                showGender = state.speciesInfo?.hasGenderDifferences == true,
                 navController
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -104,7 +103,7 @@ fun PreviewPokemonInfoScreen() {
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                PokemonInfoBox(state, maleGender = true, showGender = true)
+                PokemonInfoBox(state, maleGender = true)
                 Spacer(modifier = Modifier.height(10.dp))
                 PokemonDescriptionBox(state.speciesInfo?.description)
             }

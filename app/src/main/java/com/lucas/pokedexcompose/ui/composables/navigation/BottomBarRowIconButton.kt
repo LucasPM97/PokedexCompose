@@ -20,7 +20,7 @@ import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 fun BottomBarRowIconButton(
     icon: ImageVector,
     text: String? = null,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Row(
         modifier = Modifier

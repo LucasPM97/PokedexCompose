@@ -20,63 +20,27 @@ import com.lucas.pokedexcompose.data.models.HabitatTypes
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
 @Composable
-fun HabitatIcon(habitat: HabitatTypes?, size: Int) = when (habitat) {
-    HabitatTypes.Rare, null -> HabitatIcons.RareHabitatIcon(size)
-    else -> HabitatIcons.HabitatIconImage(habitat, size)
+fun HabitatIcon(habitat: HabitatTypes?, size: Int) {
+    val boxSize = size + (size / 8)
+
+    Image(
+        painter = getHabitatImage(habitat),
+        contentDescription = "$habitat",
+        modifier = Modifier.size(boxSize.dp)
+    )
 }
 
-object HabitatIcons {
-
-    @Composable
-    fun RareHabitatIcon(size: Int) {
-        val boxSize = size + (size / 8)
-
-        Box(
-            Modifier
-                .size(boxSize.dp)
-                .background(
-                    Color.Gray,
-                    RoundedCornerShape(50)
-                )
-        ) {
-
-            val lineHeightSp = with(LocalDensity.current) {
-                (size / 2).dp.toSp()
-            }
-
-            Text(
-                text = "?",
-                color = Color.Black,
-                modifier = Modifier
-                    .align(Alignment.Center),
-                fontSize = lineHeightSp
-            )
-        }
-    }
-
-    @Composable
-    fun HabitatIconImage(habitat: HabitatTypes, size: Int) {
-        val boxSize = size + (size / 8)
-
-        Image(
-            painter = getHabitatImage(habitat),
-            contentDescription = "$habitat",
-            modifier = Modifier.size(boxSize.dp)
-        )
-    }
-
-    @Composable
-    private fun getHabitatImage(habitat: HabitatTypes): Painter = when (habitat) {
-        HabitatTypes.Cave -> painterResource(id = R.drawable.cave)
-        HabitatTypes.Forest -> painterResource(id = R.drawable.forest)
-        HabitatTypes.Grassland -> painterResource(id = R.drawable.grassland)
-        HabitatTypes.Mountain -> painterResource(id = R.drawable.mountain)
-        HabitatTypes.RoughTerrain -> painterResource(id = R.drawable.rough_terrain)
-        HabitatTypes.Sea -> painterResource(id = R.drawable.sea)
-        HabitatTypes.Urban -> painterResource(id = R.drawable.urban)
-        HabitatTypes.WatersEdge -> painterResource(id = R.drawable.waters_edge)
-        HabitatTypes.Rare -> throw Exception("")
-    }
+@Composable
+private fun getHabitatImage(habitat: HabitatTypes?): Painter = when (habitat) {
+    HabitatTypes.Cave -> painterResource(id = R.drawable.cave)
+    HabitatTypes.Forest -> painterResource(id = R.drawable.forest)
+    HabitatTypes.Grassland -> painterResource(id = R.drawable.grassland)
+    HabitatTypes.Mountain -> painterResource(id = R.drawable.mountain)
+    HabitatTypes.RoughTerrain -> painterResource(id = R.drawable.rough_terrain)
+    HabitatTypes.Sea -> painterResource(id = R.drawable.sea)
+    HabitatTypes.Urban -> painterResource(id = R.drawable.urban)
+    HabitatTypes.WatersEdge -> painterResource(id = R.drawable.waters_edge)
+    HabitatTypes.Rare, null -> painterResource(id = R.drawable.unknown)
 }
 
 @Composable

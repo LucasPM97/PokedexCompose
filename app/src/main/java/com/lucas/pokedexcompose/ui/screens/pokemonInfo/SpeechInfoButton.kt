@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.lucas.pokedexcompose.ui.composables.EmptyComposable
 import com.lucas.pokedexcompose.ui.composables.navigation.BottomBarRowIconButton
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.lucas.pokedexcompose.utils.helpers.TextToSpeechHelper
@@ -18,6 +19,7 @@ fun SpeechInfoButton(
     if (state.pokemonInfo == null ||
         state.speciesInfo == null
     ) {
+        EmptyComposable()
         return
     }
 
