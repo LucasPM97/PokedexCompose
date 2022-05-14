@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.lucas.pokedexcompose.ui.PokemonInfoViewModelFactory
 import com.lucas.pokedexcompose.ui.PokemonTypeInfoViewModelFactory
+import com.lucas.pokedexcompose.ui.composables.PokeScreen
 import com.lucas.pokedexcompose.ui.screens.pokemonInfo.PokemonInfoScreen
 import com.lucas.pokedexcompose.ui.screens.pokemonList.PokemonListScreen
 import com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo.PokemonTypeInfoScreen
@@ -68,13 +70,16 @@ fun App(
 ) {
     val navController = rememberNavController()
 
+    navController.addOnDestinationChangedListener { _, _, _ ->
+        speech?.stop()
+    }
+
     NavHost(
         navController = navController,
         startDestination = PokemonListScreenName,
     ) {
 
         composable(PokemonListScreenName) {
-            speech?.stop()
             PokemonListScreen(navController = navController)
         }
         composable("$PokemonInfoScreenName/" +
@@ -114,7 +119,6 @@ fun App(
                     type = NavType.StringType
                 }
             )) {
-            speech?.stop()
 
             val pokemonTypeName = remember {
                 it.arguments?.getString(PokemonTypeInfoArguments.PokemonTypeName)

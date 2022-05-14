@@ -1,72 +1,55 @@
 package com.lucas.pokedexcompose.ui.screens.pokemonInfo
 
 import android.speech.tts.TextToSpeech
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.lucas.pokedexcompose.data.remote.responses.TypeInfo
+import com.lucas.pokedexcompose.ui.composables.EmptyComposable
+import com.lucas.pokedexcompose.ui.composables.navigation.BottomBarRowIconButton
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
+import com.lucas.pokedexcompose.utils.helpers.TextToSpeechHelper
 
 @Composable
 fun SpeechInfoButton(
-    state: PokemonInfoUiState? = null,
+    state: PokemonInfoUiState,
     speech: TextToSpeech? = null
 ) {
 
-    val textToSpeech = if (state == null) ""
-    else {
-        "${state.pokemonName}. " +
-                getPokemonTypeText(state.pokemonInfo?.types ?: emptyList()) +
-                (state.description ?: "")
+    if (state.pokemonInfo == null ||
+        state.speciesInfo == null
+    ) {
+        EmptyComposable()
+        return
     }
 
-    IconButton(
-        modifier = Modifier.size(40.dp),
-        onClick = {
-            speech?.speak(
-                textToSpeech,
-                TextToSpeech.QUEUE_FLUSH,
-                null,
-                ""
-            )
-        }) {
-        Icon(
-            imageVector = Icons.Rounded.VolumeUp,
-            contentDescription = "Hear pokemon description"
+    val textToSpeech = TextToSpeechHelper.getPokemonInfoTextToSpeech(
+        pokemonName = state.pokemonName,
+        pokemonInfo = state.pokemonInfo,
+        speciesInfo = state.speciesInfo
+    )
+    BottomBarRowIconButton(
+        icon = Icons.Rounded.VolumeUp,
+        text = "Info"
+    ) {
+        speech?.speak(
+            textToSpeech,
+            TextToSpeech.QUEUE_FLUSH,
+            null,
+            ""
         )
     }
-}
-
-fun getPokemonTypeText(
-    types: List<TypeInfo>
-): String {
-    var pokemonTypeText = ""
-
-    if (types.any()) {
-        types.forEachIndexed { index, typeInfo ->
-            if (index == 0) {
-                pokemonTypeText += typeInfo.name
-            } else if (index == types.lastIndex) {
-                pokemonTypeText += "and ${typeInfo.name}"
-            }
-            pokemonTypeText += " "
-        }
-        pokemonTypeText += "pokemon. "
-    }
-
-    return pokemonTypeText
 }
 
 @Composable
 @Preview
 fun PreviewSpeechInfoButton() {
     PokedexComposeTheme {
-        SpeechInfoButton()
+        SpeechInfoButton(
+            state = PokemonInfoUiState(
+                pokemonName = "Charizard",
+                pokemonNumber = 6
+            )
+        )
     }
 }

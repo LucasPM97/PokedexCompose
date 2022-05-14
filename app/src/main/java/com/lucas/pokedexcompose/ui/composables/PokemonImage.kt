@@ -21,16 +21,22 @@ import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 fun PokemonImage(
     pokemonId: Int,
     imageSize: Int,
+    genderMale: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier.size(imageSize.dp),
         contentAlignment = Alignment.Center,
 
-    ) {
+        ) {
         val pokemonPainter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current)
-                .data("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemonId.png")
+                .data(
+                    if (genderMale)
+                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemonId.png"
+                    else
+                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/$pokemonId.png"
+                )
                 .crossfade(true)
                 .build()
         )

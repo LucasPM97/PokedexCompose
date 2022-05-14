@@ -1,8 +1,8 @@
 package com.lucas.pokedexcompose.data.remote
 
-import com.lucas.pokedexcompose.data.remote.responses.PokemonDescriptionResponse
 import com.lucas.pokedexcompose.data.remote.responses.PokemonInfo
 import com.lucas.pokedexcompose.data.remote.responses.PokemonListResponse
+import com.lucas.pokedexcompose.data.remote.responses.PokemonSpeciesResponse
 import com.lucas.pokedexcompose.data.remote.responses.PokemonTypeInfo
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -27,7 +27,7 @@ interface PokeApi {
     ): PokemonInfo
 
     @GET("pokemon-species/{name}")
-    suspend fun getPokemonDescription(
+    suspend fun getPokemonSpeciesInfo(
         @Path("name") pokemonName: String
-    ): PokemonDescriptionResponse
+    ): PokemonSpeciesResponse
 }
