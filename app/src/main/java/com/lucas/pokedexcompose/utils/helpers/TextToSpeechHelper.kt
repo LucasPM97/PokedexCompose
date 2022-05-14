@@ -15,7 +15,8 @@ object TextToSpeechHelper {
                 getPokemonTypeText(
                     pokemonInfo?.types,
                     speciesInfo?.isLegendary,
-                    speciesInfo?.isMythical
+                    speciesInfo?.isMythical,
+                    speciesInfo?.isBaby
                 ) +
                 getDescriptionText(speciesInfo?.description) +
                 getEasyToCaptureText(speciesInfo?.captureRate) +
@@ -46,8 +47,8 @@ object TextToSpeechHelper {
         isMythical: Boolean?
     ): String {
         return when {
-            isLegendary == true -> "legendary "
             isMythical == true -> "mythical "
+            isLegendary == true -> "legendary "
             else -> ""
         }
     }
@@ -62,10 +63,12 @@ object TextToSpeechHelper {
     private fun getPokemonTypeText(
         types: List<TypeInfo>?,
         isLegendary: Boolean?,
-        isMythical: Boolean?
+        isMythical: Boolean?,
+        isBaby: Boolean?
     ): String {
         var pokemonTypeText = ""
         pokemonTypeText += getIsLegendaryPokemonText(isLegendary, isMythical)
+        pokemonTypeText += getBabyPokemonText(isBaby)
 
         types?.let {
             types.forEachIndexed { index, typeInfo ->
@@ -82,10 +85,12 @@ object TextToSpeechHelper {
         return pokemonTypeText
     }
 
+    private fun getBabyPokemonText(isBaby: Boolean?) = if (isBaby == true) "baby " else ""
+
     private fun getDescriptionText(description: String?): String {
         if (description == null) return ""
 
-        return "${description} "
+        return "$description "
 
     }
 }

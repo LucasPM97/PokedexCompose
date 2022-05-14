@@ -9,5 +9,6 @@ data class PokemonSpeciesResponse(
     val habitat: Habitat?,
     @SerializedName("has_gender_differences") val hasGenderDifferences: Boolean,
     @SerializedName("is_legendary") val isLegendary: Boolean,
-    @SerializedName("is_mythical") val isMythical: Boolean
+    @SerializedName("is_mythical") val isMythical: Boolean,
+    @SerializedName("is_baby") val isBabyPokemon: Boolean
 )

@@ -100,7 +100,7 @@ class PokemonInfoViewModel(
         getPokemonDescriptionJob = viewModelScope.launch {
 
             val response =
-                repository.getPokemonDescription(pokemonName = _uiState.value.pokemonName)
+                repository.getPokemonSpeciesInfo(pokemonName = _uiState.value.pokemonName)
 
             when (response) {
 
@@ -130,6 +130,7 @@ class PokemonInfoViewModel(
                                     hasGenderDifferences = data.hasGenderDifferences,
                                     isLegendary = data.isLegendary,
                                     isMythical = data.isMythical,
+                                    isBaby = data.isBabyPokemon,
                                     captureRate = data.captureRate
                                 )
                             )

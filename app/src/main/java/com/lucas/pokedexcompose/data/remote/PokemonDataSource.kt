@@ -19,8 +19,8 @@ class PokemonDataSource(
         return api.getPokemonInfo(pokemonName)
     }
 
-    override suspend fun getPokemonDescriptionData(pokemonName: String): PokemonSpeciesResponse {
-        return api.getPokemonDescription(pokemonName)
+    override suspend fun getPokemonSpeciesInfo(pokemonName: String): PokemonSpeciesResponse {
+        return api.getPokemonSpeciesInfo(pokemonName)
     }
 
     override suspend fun getPokemonTypeInfoData(pokemonType: String): PokemonTypeInfo {
@@ -31,6 +31,6 @@ class PokemonDataSource(
 interface IPokemonDataSource {
     suspend fun getPokemonListData(limit: Int, offset: Int): PokemonListResponse
     suspend fun getPokemonInfoData(pokemonName: String): PokemonInfo
-    suspend fun getPokemonDescriptionData(pokemonName: String): PokemonSpeciesResponse
+    suspend fun getPokemonSpeciesInfo(pokemonName: String): PokemonSpeciesResponse
     suspend fun getPokemonTypeInfoData(pokemonType: String): PokemonTypeInfo
 }

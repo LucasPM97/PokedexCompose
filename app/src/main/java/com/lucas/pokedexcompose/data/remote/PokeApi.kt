@@ -27,7 +27,7 @@ interface PokeApi {
     ): PokemonInfo
 
     @GET("pokemon-species/{name}")
-    suspend fun getPokemonDescription(
+    suspend fun getPokemonSpeciesInfo(
         @Path("name") pokemonName: String
     ): PokemonSpeciesResponse
 }

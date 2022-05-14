@@ -8,5 +8,6 @@ data class PokemonSpeciesEntry(
     val captureRate: Int,
     val hasGenderDifferences: Boolean,
     val isLegendary: Boolean,
-    val isMythical: Boolean
+    val isMythical: Boolean,
+    val isBaby: Boolean
 )

@@ -90,7 +90,8 @@ fun PreviewPokemonInfoScreen() {
             captureRate = 45,
             hasGenderDifferences = false,
             isLegendary = false,
-            isMythical = false
+            isMythical = false,
+            isBaby = false
         )
     )
 
