@@ -72,17 +72,22 @@ object TextToSpeechHelper {
 
         types?.let {
             types.forEachIndexed { index, typeInfo ->
-                if (index == 0) {
-                    pokemonTypeText += typeInfo.name
-                } else if (index == types.lastIndex) {
-                    pokemonTypeText += "and ${typeInfo.name}"
-                }
-                pokemonTypeText += " "
+                pokemonTypeText += getTypeText(index, typeInfo, types)
             }
         }
         pokemonTypeText += "pokemon. "
 
         return pokemonTypeText
+    }
+
+    private fun getTypeText(
+        index: Int, typeInfo: TypeInfo, types: List<TypeInfo>
+    ): String {
+        val pokemonTypeText = if (index == 0)
+            typeInfo.name
+        else "and ${typeInfo.name}"
+
+        return "$pokemonTypeText "
     }
 
     private fun getBabyPokemonText(isBaby: Boolean?) = if (isBaby == true) "baby " else ""
