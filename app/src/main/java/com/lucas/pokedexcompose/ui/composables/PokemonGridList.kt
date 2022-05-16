@@ -25,7 +25,7 @@ fun PokemonGridList(
     onEndReach: () -> Unit = {},
 ) {
     LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
+        cells = GridCells.Adaptive(170.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier,
