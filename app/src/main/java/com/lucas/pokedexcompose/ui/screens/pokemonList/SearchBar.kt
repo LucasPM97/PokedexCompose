@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
@@ -26,15 +27,13 @@ import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
 @Composable
 fun SearchBar(
+    text: String,
     modifier: Modifier = Modifier,
     hint: String = "",
-    onSearch: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {}
 ) {
-    var text by remember {
-        mutableStateOf("")
-    }
 
-    var isHintDisplayed by remember {
+    var isHintDisplayed by rememberSaveable {
         mutableStateOf(hint != "")
     }
 
@@ -47,8 +46,7 @@ fun SearchBar(
             Input(
                 text,
                 onValueChange = {
-                    text = it
-                    onSearch(it)
+                    onValueChange(it)
                 },
                 onFocusChanged = {
                     isHintDisplayed = !it.isFocused && text.isEmpty()
@@ -117,6 +115,7 @@ private fun Hint(text: String) {
 fun PreviewSearchBar() {
     PokedexComposeTheme {
         SearchBar(
+            text = "",
             hint = "Search"
         )
     }

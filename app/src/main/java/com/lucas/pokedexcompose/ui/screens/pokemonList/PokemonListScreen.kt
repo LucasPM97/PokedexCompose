@@ -2,6 +2,7 @@ package com.lucas.pokedexcompose.ui.screens.pokemonList
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,7 @@ fun PokemonListBody(
     viewModel: PokemonListViewModel? = null,
     navController: NavController? = null
 ) {
-    var searchString by remember {
+    var searchString by rememberSaveable {
         mutableStateOf("")
     }
 
@@ -54,6 +55,7 @@ fun PokemonListBody(
                 .padding(top = 10.dp)
         ) {
             SearchBar(
+                text = searchString,
                 hint = "Search...",
                 modifier = Modifier
                     .fillMaxWidth()
