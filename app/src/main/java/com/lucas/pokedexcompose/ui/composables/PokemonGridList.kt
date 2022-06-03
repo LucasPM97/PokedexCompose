@@ -3,9 +3,9 @@ package com.lucas.pokedexcompose.ui.composables
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.GridItemSpan
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.lucas.pokedexcompose.data.models.PokemonListEntry
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PokemonGridList(
     pokemonList: List<PokemonListEntry>,
@@ -26,7 +25,7 @@ fun PokemonGridList(
     }
 ) {
     LazyVerticalGrid(
-        cells = GridCells.Adaptive(170.dp),
+        columns = GridCells.Adaptive(170.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier,
