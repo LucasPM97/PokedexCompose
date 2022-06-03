@@ -15,10 +15,7 @@ fun PokemonTypeRow(
     types: List<TypeInfo>,
     itemOnClick: (String) -> Unit = {}
 ) {
-    Row(
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
+    Row {
         types.forEachIndexed { index, type ->
 
             PokemonTypeBox(

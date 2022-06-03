@@ -20,62 +20,80 @@ import com.lucas.pokedexcompose.ui.composables.PokeCardBox
 import com.lucas.pokedexcompose.ui.composables.PokemonImage
 import com.lucas.pokedexcompose.ui.navigateToPokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
+import com.lucas.pokedexcompose.utils.extensions.WindowSize
 import com.lucas.pokedexcompose.utils.extensions.threeDigitsString
 
 @Composable
 fun PokemonInfoBox(
     state: PokemonInfoUiState,
     maleGender: Boolean,
-    navController: NavController? = null,
+    boxModifier: Modifier = Modifier,
+    contentModifier: Modifier = Modifier,
+    isCompactWindow: Boolean = true,
+    navController: NavController? = null
 ) {
     PokeCardBox {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
+            modifier = boxModifier
         ) {
             HabitatHeader(state.speciesInfo?.habitat)
             Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = contentModifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 PokemonImage(
                     pokemonId = state.pokemonNumber,
                     imageSize = 240,
                     genderMale = maleGender
                 )
-                Spacer(modifier = Modifier.height(20.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = state.pokemonNumber.threeDigitsString()
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = state.pokemonName
-                            .replaceFirstChar {
-                                it.uppercase()
-                            }
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    if (state.speciesInfo?.hasGenderDifferences == true) {
-                        GenderIcon(maleGender)
-                    }
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-                state.pokemonInfo?.let {
-                    PokemonStats(
-                        pokemonInfo = it,
-                        onTypeClick = {
-                            navController?.navigateToPokemonTypeInfoScreen(
-                                it
-                            )
-                        }
-                    )
+                if (isCompactWindow) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    PokemonData(state, maleGender, navController)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun PokemonData(
+    state: PokemonInfoUiState,
+    maleGender: Boolean,
+    navController: NavController?
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = state.pokemonNumber.threeDigitsString()
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = state.pokemonName
+                .replaceFirstChar {
+                    it.uppercase()
+                }
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        if (state.speciesInfo?.hasGenderDifferences == true) {
+            GenderIcon(maleGender)
+        }
+    }
+    Spacer(modifier = Modifier.height(20.dp))
+    state.pokemonInfo?.let {
+        PokeBodyStats(
+            height = it.height,
+            weight = it.weight
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        PokemonTypeRow(
+            types = it.types,
+            itemOnClick = {
+                navController?.navigateToPokemonTypeInfoScreen(
+                    it
+                )
+            }
+        )
     }
 }
 
@@ -102,32 +120,50 @@ private fun GenderIcon(maleGender: Boolean) {
     )
 }
 
-@Composable
-@Preview
-fun PreviewPokemonInfoBox() {
 
-    val state = PokemonInfoUiState(
-        pokemonNumber = 6,
-        pokemonName = "Charizard",
-        pokemonInfo = PokemonInfoEntry(
-            height = 1.7f,
-            weight = 20f,
-            name = "Charizard",
-            types = listOf(
-                com.lucas.pokedexcompose.data.remote.responses.TypeInfo(
-                    "fire", ""
-                ),
-                com.lucas.pokedexcompose.data.remote.responses.TypeInfo(
-                    "flying", ""
-                )
+val previewState = PokemonInfoUiState(
+    pokemonNumber = 6,
+    pokemonName = "Charizard",
+    pokemonInfo = PokemonInfoEntry(
+        height = 1.7f,
+        weight = 20f,
+        name = "Charizard",
+        types = listOf(
+            com.lucas.pokedexcompose.data.remote.responses.TypeInfo(
+                "fire", ""
+            ),
+            com.lucas.pokedexcompose.data.remote.responses.TypeInfo(
+                "flying", ""
             )
         )
     )
+)
 
+@Composable
+@Preview
+fun PreviewPokemonInfoBox() {
     PokedexComposeTheme {
         PokemonInfoBox(
-            state = state,
-            maleGender = true
+            state = previewState,
+            maleGender = true,
+            boxModifier = Modifier.fillMaxWidth(),
+            contentModifier = Modifier.fillMaxWidth()
         )
+    }
+}
+
+@Composable
+@Preview
+fun PreviewPokemonPokemonDataBox() {
+    PokedexComposeTheme {
+        PokeCardBox {
+            Column {
+                PokemonData(
+                    previewState,
+                    true,
+                    null
+                )
+            }
+        }
     }
 }
