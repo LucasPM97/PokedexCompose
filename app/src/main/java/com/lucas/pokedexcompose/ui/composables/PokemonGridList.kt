@@ -25,7 +25,7 @@ fun PokemonGridList(
     }
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(170.dp),
+        columns = GridCells.Adaptive(160.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier,
