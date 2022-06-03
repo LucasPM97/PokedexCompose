@@ -17,20 +17,19 @@ import androidx.compose.ui.unit.sp
 import com.lucas.pokedexcompose.data.remote.responses.DamageRelation
 import com.lucas.pokedexcompose.ui.composables.PokemonTypeBox
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
-import kotlin.math.floor
 import kotlin.math.roundToInt
 
 const val GRID_CELL_HEIGHT = 30
 const val GRID_CELL_SPACE = 5
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DamageRelationGrid(
     damageRelation: List<DamageRelation>,
     itemOnPress: (String) -> Unit = {}
 ) {
+    BoxWithConstraints() {
+        val gridListHeight = gridListHeight(damageRelation.size, maxWidth)
 
-    val gridListHeight = gridListHeight(damageRelation.size)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(150.dp),
             Modifier
@@ -53,13 +52,23 @@ fun DamageRelationGrid(
             }
         }
     }
+
 }
 
-private fun gridListHeight(listSize: Int): Int {
+private fun gridListHeight(listSize: Int, maxWidth: Dp): Int {
     val gridHeightWithSpace = GRID_CELL_HEIGHT + GRID_CELL_SPACE
-    val rowsNum: Int = (listSize.toFloat() / 2).roundToInt()
+
+    val expectedColumns = expectedColumns(maxWidth)
+
+    val rowsNum: Int = ((listSize.toFloat() / expectedColumns) + 0.5).roundToInt()
 
     return rowsNum * gridHeightWithSpace
+}
+
+private fun expectedColumns(maxWidth: Dp): Int {
+    return if (maxWidth > 840.dp) 5
+    else if (maxWidth > 600.dp) 4
+    else 2
 }
 
 @Composable
