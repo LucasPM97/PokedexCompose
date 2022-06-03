@@ -2,19 +2,29 @@ package com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lucas.pokedexcompose.data.remote.responses.DamageRelation
 import com.lucas.pokedexcompose.ui.composables.PokemonTypeBox
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
+import kotlin.math.floor
+import kotlin.math.roundToInt
+
+const val GRID_CELL_HEIGHT = 30
+const val GRID_CELL_SPACE = 5
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -22,30 +32,59 @@ fun DamageRelationGrid(
     damageRelation: List<DamageRelation>,
     itemOnPress: (String) -> Unit = {}
 ) {
+
+    val gridListHeight = gridListHeight(damageRelation.size)
+
     LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(5.dp),
-        verticalArrangement = Arrangement.spacedBy(5.dp),
+        cells = GridCells.Adaptive(150.dp),
+        Modifier
+            .fillMaxWidth()
+            .height(gridListHeight.dp),
+        horizontalArrangement = Arrangement.spacedBy(GRID_CELL_SPACE.dp),
+        verticalArrangement = Arrangement.spacedBy(GRID_CELL_SPACE.dp),
     ) {
         items(damageRelation.size) { index ->
             val pokemonTypeName = damageRelation[index].name
             PokemonTypeBox(
                 pokemonTypeName,
                 modifier = Modifier
+                    .height(GRID_CELL_HEIGHT.dp)
                     .clickable {
                         itemOnPress(pokemonTypeName)
-                    }
-                    .padding(10.dp),
+                    },
                 fontSize = 14.sp
             )
         }
     }
 }
 
+private fun gridListHeight(listSize: Int): Int {
+    val gridHeightWithSpace = GRID_CELL_HEIGHT + GRID_CELL_SPACE
+    val rowsNum: Int = (listSize.toFloat() / 2).roundToInt()
+
+    return rowsNum * gridHeightWithSpace
+}
+
 @Composable
 @Preview
-fun PreviewDamageRelationGrid() {
+fun PreviewDamageRelationGridTwoItems() {
+    PokedexComposeTheme {
+        DamageRelationGrid(
+            damageRelation = listOf(
+                DamageRelation(
+                    "grass"
+                ),
+                DamageRelation(
+                    "ice"
+                ),
+            )
+        )
+    }
+}
+
+@Composable
+@Preview
+fun PreviewDamageRelationGridThreeItems() {
     PokedexComposeTheme {
         DamageRelationGrid(
             damageRelation = listOf(

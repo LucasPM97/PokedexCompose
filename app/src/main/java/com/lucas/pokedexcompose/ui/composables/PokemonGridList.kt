@@ -2,11 +2,9 @@ package com.lucas.pokedexcompose.ui.composables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.GridItemSpan
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +21,9 @@ fun PokemonGridList(
     contentPadding: PaddingValues = PaddingValues(bottom = 10.dp),
     itemOnClick: (PokemonListEntry) -> Unit = {},
     onEndReach: () -> Unit = {},
+    header: @Composable () -> Unit = {
+        EmptyComposable()
+    }
 ) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(170.dp),
@@ -31,6 +32,13 @@ fun PokemonGridList(
         modifier = modifier,
         contentPadding = contentPadding
     ) {
+        item(
+            span = {
+                GridItemSpan(maxCurrentLineSpan)
+            }
+        ) {
+            header()
+        }
         items(pokemonList.size) { index ->
 
             if (index >= pokemonList.lastIndex) {
