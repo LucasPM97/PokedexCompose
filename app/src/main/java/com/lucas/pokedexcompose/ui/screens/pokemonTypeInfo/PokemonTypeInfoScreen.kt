@@ -42,32 +42,10 @@ fun ScreenBody(
     navController: NavController? = null
 ) {
     Column(
-        modifier = Modifier.padding(horizontal = 10.dp)
+        modifier = Modifier
+            .padding(horizontal = 10.dp)
             .padding(top = 10.dp)
     ) {
-        PokeCardBox {
-            Column {
-                Spacer(modifier = Modifier.height(30.dp))
-                PokemonTypeBox(
-                    typeName = state.pokemonTypeName,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    fontSize = 18.sp
-                )
-                state.pokemonTypeInfo?.let {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
-                        DamageRelations(it.damageRelations) {
-                            navController?.navigateToPokemonTypeInfoScreen(
-                                it
-                            )
-                        }
-                    }
-                }
-            }
-        }
         state.pokemonTypeInfo?.let {
             Spacer(modifier = Modifier.height(5.dp))
             PokemonGridList(
@@ -77,8 +55,41 @@ fun ScreenBody(
                         pokemon.pokemonName,
                         pokemon.number
                     )
+                },
+                header = {
+                    PokemonTypeInfoHeader(state, navController)
                 }
             )
+        }
+    }
+}
+
+@Composable
+private fun PokemonTypeInfoHeader(
+    state: PokemonTypeInfoUiState,
+    navController: NavController?
+) {
+    PokeCardBox {
+        Column {
+            Spacer(modifier = Modifier.height(30.dp))
+            PokemonTypeBox(
+                typeName = state.pokemonTypeName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                fontSize = 18.sp
+            )
+            state.pokemonTypeInfo?.let {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    DamageRelations(it.damageRelations) {
+                        navController?.navigateToPokemonTypeInfoScreen(
+                            it
+                        )
+                    }
+                }
+            }
         }
     }
 }
