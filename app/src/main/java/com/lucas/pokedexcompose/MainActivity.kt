@@ -1,43 +1,137 @@
 package com.lucas.pokedexcompose
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.lucas.pokedexcompose.ui.PokemonInfoViewModelFactory
+import com.lucas.pokedexcompose.ui.PokemonTypeInfoViewModelFactory
+import com.lucas.pokedexcompose.ui.composables.PokeScreen
+import com.lucas.pokedexcompose.ui.screens.pokemonInfo.PokemonInfoScreen
+import com.lucas.pokedexcompose.ui.screens.pokemonList.PokemonListScreen
+import com.lucas.pokedexcompose.ui.screens.pokemonTypeInfo.PokemonTypeInfoScreen
 import com.lucas.pokedexcompose.ui.theme.PokedexComposeTheme
+import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoScreenName
+import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonListScreenName
+import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonInfoArguments
+import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonTypeInfoScreenName
+import com.lucas.pokedexcompose.utils.Constans.Screens.PokemonTypeInfoArguments
+import java.util.*
 
 class MainActivity : ComponentActivity() {
+
+    var speech: TextToSpeech? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            PokedexComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+
+        speech = TextToSpeech(
+            this
+        ) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                // set US English as language for tts
+                val result = speech?.setLanguage(Locale.US)
+
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e("TTS", "The Language specified is not supported!")
                 }
+
+            } else {
+                Log.e("TTS", "Initilization Failed!")
             }
         }
+
+        setContent {
+            PokedexComposeTheme {
+                App(speech)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        speech?.stop()
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+fun App(
+    speech: TextToSpeech?
+) {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PokedexComposeTheme {
-        Greeting("Android")
+    navController.addOnDestinationChangedListener { _, _, _ ->
+        speech?.stop()
+    }
+
+    NavHost(
+        navController = navController,
+        startDestination = PokemonListScreenName,
+    ) {
+
+        composable(PokemonListScreenName) {
+            PokemonListScreen(navController = navController)
+        }
+        composable("$PokemonInfoScreenName/" +
+                "{${PokemonInfoArguments.PokemonName}}/" +
+                "{${PokemonInfoArguments.PokemonNumber}}",
+            arguments = listOf(
+                navArgument(PokemonInfoArguments.PokemonName) {
+                    type = NavType.StringType
+                },
+                navArgument(PokemonInfoArguments.PokemonNumber) {
+                    type = NavType.IntType
+                }
+            )) {
+
+            val pokemonNumber = remember {
+                it.arguments?.getInt(PokemonInfoArguments.PokemonNumber)
+            }
+
+            val pokemonName = remember {
+                it.arguments?.getString(PokemonInfoArguments.PokemonName)
+            }
+
+            PokemonInfoScreen(
+                navController = navController,
+                viewModel = viewModel(
+                    factory = PokemonInfoViewModelFactory(
+                        pokemonNumber = pokemonNumber ?: 1,
+                        pokemonName = pokemonName ?: "Dummy"
+                    )
+                ),
+                speech
+            )
+        }
+        composable("$PokemonTypeInfoScreenName/{${PokemonTypeInfoArguments.PokemonTypeName}}",
+            arguments = listOf(
+                navArgument(PokemonTypeInfoArguments.PokemonTypeName) {
+                    type = NavType.StringType
+                }
+            )) {
+
+            val pokemonTypeName = remember {
+                it.arguments?.getString(PokemonTypeInfoArguments.PokemonTypeName)
+            }
+
+            PokemonTypeInfoScreen(
+                navController = navController,
+                viewModel = viewModel(
+                    factory = PokemonTypeInfoViewModelFactory(
+                        pokemonTypeName = pokemonTypeName ?: "Dummy"
+                    )
+                )
+            )
+        }
     }
 }
